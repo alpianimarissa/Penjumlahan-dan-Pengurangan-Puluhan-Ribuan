@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Penjumlahan & Pengurangan Bersusun - Kelas 5 SD</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Fredoka & Quicksand -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@500;600;700;800&family=Fira+Code:wght@600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Fredoka', 'Quicksand', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Fredoka', 'Quicksand', sans-serif;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 40%, #fef3c7 100%);
+            min-height: 100vh;
+        }
+        .comic-card {
+            box-shadow: 0 8px 0px 0px rgba(15, 23, 42, 0.12);
+        }
+        .comic-btn {
+            transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 0px 0px #1e293b;
+        }
+        .comic-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 0px 0px #1e293b;
+        }
+        .comic-btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 1px 0px 0px #1e293b;
+        }
+        .place-val-cell {
+            width: 38px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+        }
+        @media (min-width: 640px) {
+            .place-val-cell {
+                width: 48px;
+                height: 56px;
+            }
+        }
+    </style>
+</head>
+<body class="text-slate-800 pb-12">
+
+    <script>
+        const SoundFX = {
+            ctx: null,
+            enabled: true,
+            init() {
+                if (!this.ctx) {
+                    this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+            },
+            toggleSound() {
+                this.enabled = !this.enabled;
+                const btn = document.getElementById('sound-toggle-btn');
+                if (btn) {
+                    btn.innerHTML = this.enabled 
+                        ? '<i class="fa-solid fa-volume-high"></i>' 
+                        : '<i class="fa-solid fa-volume-xmark text-rose-400"></i>';
+                }
+            },
+            playClick() {
+                if (!this.enabled) return;
+                this.init();
+                let osc = this.ctx.createOscillator();
+                let gain = this.ctx.createGain();
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.frequency.setValueAtTime(500, this.ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(1000, this.ctx.currentTime + 0.05);
+                gain.gain.setValueAtTime(0.08, this.ctx.currentTime);
+                gain.gain.linearRampToValueAtTime(0.01, this.ctx.currentTime + 0.05);
+                osc.start();
+                osc.stop(this.ctx.currentTime + 0.06);
+            },
+            playSuccess() {
+                if (!this.enabled) return;
+                this.init();
+                let now = this.ctx.currentTime;
+                let notes = [523.25, 659.25, 783.99, 1046.50];
+                notes.forEach((freq, idx) => {
+                    let osc = this.ctx.createOscillator();
+                    let gain = this.ctx.createGain();
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.frequency.setValueAtTime(freq, now + idx * 0.06);
+                    gain.gain.setValueAtTime(0.1, now + idx * 0.06);
+                    gain.gain.linearRampToValueAtTime(0.01, now + idx * 0.06 + 0.12);
+                    osc.start(now + idx * 0.06);
+                    osc.stop(now + idx * 0.06 + 0.14);
+                });
+            },
+            playWrong() {
+                if (!this.enabled) return;
+                this.init();
+                let osc = this.ctx.createOscillator();
+                let gain = this.ctx.createGain();
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(220, this.ctx.currentTime);
+                osc.frequency.linearRampToValueAtTime(110, this.ctx.currentTime + 0.25);
+                gain.gain.setValueAtTime(0.08, this.ctx.currentTime);
+                gain.gain.linearRampToValueAtTime(0.01, this.ctx.currentTime + 0.25);
+                osc.start();
+                osc.stop(this.ctx.currentTime + 0.26);
+            }
+        };
+    </script>
+
+    <nav class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b-4 border-slate-900 px-4 py-3 mb-6">
+        <div class="max-w-5xl mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <span class="text-3xl">🧮</span>
+                <div>
+                    <h1 class="text-lg sm:text-xl font-black text-slate-900 leading-tight">MASTER BERSUSUN</h1>
+                    <p class="text-xs font-bold text-indigo-600">Matematika Kelas 5 SD (Maks. 100.000)</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-2">
+                <button id="sound-toggle-btn" onclick="SoundFX.toggleSound()" class="w-10 h-10 bg-slate-100 hover:bg-slate-200 border-2 border-slate-900 rounded-2xl flex items-center justify-center text-slate-800 font-bold transition-all" title="Suara">
+                    <i class="fa-solid fa-volume-high"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-4xl mx-auto px-4 space-y-8">
+
+        <section id="tujuan" class="bg-white rounded-3xl border-4 border-slate-900 p-6 comic-card">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-12 h-12 bg-indigo-500 border-2 border-slate-900 rounded-2xl flex items-center justify-center text-white text-2xl font-black">
+                    🎯
+                </div>
+                <div>
+                    <span class="text-xs font-black uppercase text-indigo-600 tracking-wider">Bagian 1</span>
+                    <h2 class="text-2xl font-black text-slate-900">Tujuan Pembelajaran</h2>
+                </div>
+            </div>
+
+            <p class="text-sm sm:text-base font-semibold text-slate-600 mb-4">
+                Setelah mempelajari modul interaktif ini, kamu akan menjadi master dalam menyelesaikan perhitungan bilangan besar sampai <strong class="text-indigo-600">100.000</strong>!
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div class="bg-indigo-50 border-2 border-slate-900 rounded-2xl p-4 flex items-start gap-3">
+                    <span class="text-2xl">📍</span>
+                    <div>
+                        <h3 class="font-black text-slate-900 text-sm">Paham Nilai Tempat</h3>
+                        <p class="text-xs text-slate-600 font-medium">Mampu meluruskan angka berdasarkan Satuan, Puluhan, Ratusan, Ribuan, dan Puluhan Ribu.</p>
+                    </div>
+                </div>
+
+                <div class="bg-emerald-50 border-2 border-slate-900 rounded-2xl p-4 flex items-start gap-3">
+                    <span class="text-2xl">➕</span>
+                    <div>
+                        <h3 class="font-black text-slate-900 text-sm">Penjumlahan Bersusun</h3>
+                        <p class="text-xs text-slate-600 font-medium">Lihai menghitung penjumlahan bersusun dengan teknik <strong class="text-emerald-700">menyimpan (carrying)</strong>.</p>
+                    </div>
+                </div>
+
+                <div class="bg-amber-50 border-2 border-slate-900 rounded-2xl p-4 flex items-start gap-3">
+                    <span class="text-2xl">➖</span>
+                    <div>
+                        <h3 class="font-black text-slate-900 text-sm">Pengurangan Bersusun</h3>
+                        <p class="text-xs text-slate-600 font-medium">Lihai menghitung pengurangan bersusun dengan teknik <strong class="text-amber-700">meminjam (borrowing)</strong>.</p>
+                    </div>
+                </div>
+
+                <div class="bg-purple-50 border-2 border-slate-900 rounded-2xl p-4 flex items-start gap-3">
+                    <span class="text-2xl">🛒</span>
+                    <div>
+                        <h3 class="font-black text-slate-900 text-sm">Penerapan Sehari-hari</h3>
+                        <p class="text-xs text-slate-600 font-medium">Siap menyelesaikan soal cerita uang, barang, dan data bilangan di kehidupan nyata.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="warmup" class="bg-white rounded-3xl border-4 border-slate-900 p-6 comic-card">
+            <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 bg-amber-400 border-2 border-slate-900 rounded-2xl flex items-center justify-center text-slate-900 text-2xl font-black">
+                        🔥
+                    </div>
+                    <div>
+                        <span class="text-xs font-black uppercase text-amber-600 tracking-wider">Bagian 2</span>
+                        <h2 class="text-2xl font-black text-slate-900">Warm-Up: Pemanasan Otak!</h2>
+                    </div>
+                </div>
+                <div class="bg-amber-100 border-2 border-slate-900 px-3 py-1 rounded-xl text-xs font-black text-amber-900">
+                    Skor: <span id="warmup-score">0</span>/6
+                </div>
+            </div>
+
+            <p class="text-xs sm:text-sm font-semibold text-slate-600 mb-4">
+                Sebelum masuk ke penjumlahan dan pengurangan angka besar, mari uji ketangkasan perkalian dasar satuanmu!
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4" id="warmup-container">
+                <!-- Dynamically generated warm-up questions -->
+            </div>
+        </section>
+
+        <section id="alasan-nyata" class="bg-white rounded-3xl border-4 border-slate-900 p-6 comic-card">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-12 h-12 bg-emerald-400 border-2 border-slate-900 rounded-2xl flex items-center justify-center text-slate-900 text-2xl font-black">
+                    💡
+                </div>
+                <div>
+                    <span class="text-xs font-black uppercase text-emerald-600 tracking-wider">Bagian 3</span>
+                    <h2 class="text-2xl font-black text-slate-900">Mengapa Ini Penting Di Kehidupan Nyata?</h2>
+                </div>
+            </div>
+
+            <p class="text-xs sm:text-sm font-semibold text-slate-600 mb-5">
+                Hitungan bersusun puluhan ribu bukan cuma teori di buku sekolah, tapi dipakai setiap hari! Simak 3 contoh berikut:
+            </p>
+
+            <div class="space-y-4">
+                <!-- Case 1 -->
+                <div class="bg-emerald-50 border-2 border-slate-900 rounded-2xl p-4 flex flex-col md:flex-row items-start md:items-center gap-4">
+                    <div class="w-14 h-14 bg-emerald-200 border-2 border-slate-900 rounded-2xl flex items-center justify-center text-3xl shrink-0">
+                        🚲
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="bg-emerald-200 border border-slate-900 text-emerald-900 text-[10px] font-black px-2 py-0.5 rounded-full uppercase">Kasus 1: Menabung Sepeda</span>
+                        </div>
+                        <h3 class="font-black text-slate-900 text-base">Membeli Sepeda dari Tabungan</h3>
+                        <p class="text-xs sm:text-sm text-slate-600 font-medium mt-1">
+                            Budi punya tabungan <strong>Rp45.500</strong>. Saat ulang tahun, kakek memberinya tambahan uang sebesar <strong>Rp38.000</strong>. Berapa total tabungan Budi sekarang?
+                            <br><span class="text-emerald-800 font-bold">➡️ Kita gunakan Penjumlahan Bersusun: 45.500 + 38.000 = Rp83.500</span>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Case 2 -->
+                <div class="bg-sky-50 border-2 border-slate-900 rounded-2xl p-4 flex flex-col md:flex-row items-start md:items-center gap-4">
+                    <div class="w-14 h-14 bg-sky-200 border-2 border-slate-900 rounded-2xl flex items-center justify-center text-3xl shrink-0">
+                        🛍️
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="bg-sky-200 border border-slate-900 text-sky-900 text-[10px] font-black px-2 py-0.5 rounded-full uppercase">Kasus 2: Belanja Koperasi</span>
+                        </div>
+                        <h3 class="font-black text-slate-900 text-base">Menghitung Uang Kembalian</h3>
+                        <p class="text-xs sm:text-sm text-slate-600 font-medium mt-1">
+                            Siti membawa uang <strong>Rp50.000</strong> untuk membeli buku dan alat tulis di koperasi seharga <strong>Rp28.500</strong>. Berapa uang kembalian yang harus Siti terima?
+                            <br><span class="text-sky-800 font-bold">➡️ Kita gunakan Pengurangan Bersusun: 50.000 - 28.500 = Rp21.500</span>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Case 3 -->
+                <div class="bg-purple-50 border-2 border-slate-900 rounded-2xl p-4 flex flex-col md:flex-row items-start md:items-center gap-4">
+                    <div class="w-14 h-14 bg-purple-200 border-2 border-slate-900 rounded-2xl flex items-center justify-center text-3xl shrink-0">
+                        📚
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="bg-purple-200 border border-slate-900 text-purple-900 text-[10px] font-black px-2 py-0.5 rounded-full uppercase">Kasus 3: Data Perpustakaan</span>
+                        </div>
+                        <h3 class="font-black text-slate-900 text-base">Inventaris Buku Sekolah</h3>
+                        <p class="text-xs sm:text-sm text-slate-600 font-medium mt-1">
+                            Perpustakaan SD Merdeka memiliki <strong>14.250</strong> buku cerita dan <strong>8.620</strong> buku pelajaran. Berapa jumlah seluruh koleksi buku sekolah?
+                            <br><span class="text-purple-800 font-bold">➡️ Kita gunakan Penjumlahan Bersusun: 14.250 + 8.620 = 22.870 buku</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="konsep" class="bg-white rounded-3xl border-4 border-slate-900 p-6 comic-card space-y-6">
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 bg-indigo-500 border-2 border-slate-900 rounded-2xl flex items-center justify-center text-white text-2xl font-black">
+                    🧠
+                </div>
+                <div>
+                    <span class="text-xs font-black uppercase text-indigo-600 tracking-wider">Bagian 4</span>
+                    <h2 class="text-2xl font-black text-slate-900">Konsep & Rahasia Bersusun</h2>
+                </div>
+            </div>
+
+            <!-- Alignment Rule -->
+            <div class="bg-gradient-to-r from-amber-50 to-orange-50 border-3 border-slate-900 rounded-2xl p-4 relative overflow-hidden">
+                <h3 class="font-black text-slate-900 text-base mb-2 flex items-center gap-2">
+                    <span class="text-amber-500 text-xl">⭐</span> ATURAN EMAS: Luruskan Nilai Tempat dari KANAN!
+                </h3>
+                <p class="text-xs sm:text-sm text-slate-700 font-semibold leading-relaxed">
+                    Saat menuliskan angka bersusun, <strong>Satuan harus sejajar dengan Satuan</strong>, Puluhan dengan Puluhan, dan seterusnya. Jangan pernah meluruskan dari depan (kiri)!
+                </p>
+                
+                <!-- Place value grid representation -->
+                <div class="mt-4 bg-slate-900 text-white rounded-2xl p-4 font-mono text-center overflow-x-auto">
+                    <div class="inline-block min-w-max">
+                        <div class="grid grid-cols-5 text-[10px] sm:text-xs font-black text-amber-300 border-b border-slate-700 pb-1 mb-2">
+                            <div>Puluhan Ribu (PR)</div>
+                            <div>Ribuan (R)</div>
+                            <div>Ratusan (Rat)</div>
+                            <div>Puluhan (P)</div>
+                            <div>Satuan (S)</div>
+                        </div>
+                        <div class="grid grid-cols-5 text-sm sm:text-base font-bold text-emerald-400">
+                            <div>4</div>
+                            <div>7</div>
+                            <div>8</div>
+                            <div>5</div>
+                            <div>0</div>
+                        </div>
+                        <div class="grid grid-cols-5 text-sm sm:text-base font-bold text-sky-300">
+                            <div>3</div>
+                            <div>8</div>
+                            <div>4</div>
+                            <div>7</div>
+                            <div>5</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Addition Carrying Rule & Subtraction Borrowing Rule -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Carrying -->
+                <div class="bg-emerald-50 border-2 border-slate-900 rounded-2xl p-4 space-y-2">
+                    <div class="flex items-center gap-2">
+                        <span class="w-8 h-8 bg-emerald-400 border border-slate-900 rounded-xl flex items-center justify-center font-black text-slate-900 text-sm">➕</span>
+                        <h4 class="font-black text-slate-900 text-base">Teknik Menyimpan (Carrying)</h4>
+                    </div>
+                    <p class="text-xs text-slate-600 font-semibold leading-relaxed">
+                        Jika hasil penjumlahan di satu kolom bernilai <strong>10 atau lebih</strong> (misal 15):
+                    </p>
+                    <ul class="text-xs text-slate-700 font-bold space-y-1 list-disc list-inside">
+                        <li>Tulis angka <span class="text-emerald-700">Satuan (5)</span> di bawah.</li>
+                        <li>Simpan angka <span class="text-rose-600">Puluhan (1)</span> di atas kolom sebelah kirinya!</li>
+                    </ul>
+                </div>
+
+                <!-- Borrowing -->
+                <div class="bg-amber-50 border-2 border-slate-900 rounded-2xl p-4 space-y-2">
+                    <div class="flex items-center gap-2">
+                        <span class="w-8 h-8 bg-amber-400 border border-slate-900 rounded-xl flex items-center justify-center font-black text-slate-900 text-sm">➖</span>
+                        <h4 class="font-black text-slate-900 text-base">Teknik Meminjam (Borrowing)</h4>
+                    </div>
+                    <p class="text-xs text-slate-600 font-semibold leading-relaxed">
+                        Jika angka atas <strong>lebih kecil</strong> dari angka bawah (misal 3 - 7):
+                    </p>
+                    <ul class="text-xs text-slate-700 font-bold space-y-1 list-disc list-inside">
+                        <li>Pinjam <span class="text-amber-800">1 puluhan (bernilai 10)</span> dari angka sebelah kiri.</li>
+                        <li>Angka 3 berubah jadi <span class="text-emerald-700">13</span> (10 + 3), lalu kurangkan: 13 - 7 = 6!</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Special Section: Pengurangan Nol Beruntun (500 - 273) -->
+            <div class="bg-rose-50 border-3 border-slate-900 rounded-2xl p-5 space-y-3">
+                <h3 class="font-black text-rose-950 text-base flex items-center gap-2">
+                    <span class="text-xl">🔥</span> RAHASIA KHUSUS: Pengurangan Angka Nol Beruntun (Misal: 500 - 273)
+                </h3>
+                <p class="text-xs sm:text-sm text-slate-700 font-semibold leading-relaxed">
+                    Sering bingung kalau mau meminjam tapi angka sebelah kirinya adalah <strong>0</strong>? Ini rahasia langkah mudahnya:
+                </p>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs font-bold text-slate-800">
+                    <div class="bg-white border-2 border-slate-900 rounded-xl p-3">
+                        <span class="text-rose-600 font-black">Langkah 1:</span>
+                        <p class="text-slate-600 font-medium mt-1">
+                            Pinjam dari angka bukan 0 paling kiri! (Angka <strong>5</strong> ratusan dipinjam 1, tersisa <strong>4</strong>).
+                        </p>
+                    </div>
+                    <div class="bg-white border-2 border-slate-900 rounded-xl p-3">
+                        <span class="text-rose-600 font-black">Langkah 2:</span>
+                        <p class="text-slate-600 font-medium mt-1">
+                            Angka 0 di tengah berubah jadi <strong class="text-amber-700">9</strong> (karena meminjamkan lagi ke satuan).
+                        </p>
+                    </div>
+                    <div class="bg-white border-2 border-slate-900 rounded-xl p-3">
+                        <span class="text-rose-600 font-black">Langkah 3:</span>
+                        <p class="text-slate-600 font-medium mt-1">
+                            Angka 0 paling kanan (satuan) menjadi <strong class="text-emerald-700">10</strong>. Sekarang tinggal dikurangkan: <br>
+                            10 - 3 = <strong>7</strong> | 9 - 7 = <strong>2</strong> | 4 - 2 = <strong>2</strong> (Hasil: <strong>227</strong>).
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contoh" class="bg-white rounded-3xl border-4 border-slate-900 p-6 comic-card space-y-6">
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 bg-sky-400 border-2 border-slate-900 rounded-2xl flex items-center justify-center text-slate-900 text-2xl font-black">
+                    📖
+                </div>
+                <div>
+                    <span class="text-xs font-black uppercase text-sky-600 tracking-wider">Bagian 5</span>
+                    <h2 class="text-2xl font-black text-slate-900">Contoh Soal Step-by-Step</h2>
+                </div>
+            </div>
+
+            <!-- Category Selector Tabs -->
+            <div class="flex flex-wrap gap-2 border-b-2 border-slate-200 pb-3" id="example-tabs">
+                <button onclick="switchExample('puluhan')" id="tab-puluhan" class="comic-btn px-4 py-2 bg-indigo-500 text-white border-2 border-slate-900 rounded-xl font-black text-xs sm:text-sm">
+                    1. Puluhan
+                </button>
+                <button onclick="switchExample('ratusan')" id="tab-ratusan" class="comic-btn px-4 py-2 bg-slate-100 text-slate-800 hover:bg-slate-200 border-2 border-slate-900 rounded-xl font-black text-xs sm:text-sm">
+                    2. Ratusan
+                </button>
+                <button onclick="switchExample('ribuan')" id="tab-ribuan" class="comic-btn px-4 py-2 bg-slate-100 text-slate-800 hover:bg-slate-200 border-2 border-slate-900 rounded-xl font-black text-xs sm:text-sm">
+                    3. Ribuan
+                </button>
+                <button onclick="switchExample('puluhanribu')" id="tab-puluhanribu" class="comic-btn px-4 py-2 bg-slate-100 text-slate-800 hover:bg-slate-200 border-2 border-slate-900 rounded-xl font-black text-xs sm:text-sm">
+                    4. Puluhan Ribu
+                </button>
+            </div>
+
+            <!-- Example Interactive Display Board -->
+            <div id="example-board" class="bg-slate-900 text-white rounded-3xl p-6 border-4 border-slate-900 space-y-6">
+                <!-- Content injected via JavaScript -->
+            </div>
+        </section>
+
+        <section id="latihan" class="bg-white rounded-3xl border-4 border-slate-900 p-6 comic-card space-y-6">
+            <div class="flex items-center justify-between border-b-2 border-slate-100 pb-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 bg-rose-500 border-2 border-slate-900 rounded-2xl flex items-center justify-center text-white text-2xl font-black">
+                        ✏️
+                    </div>
+                    <div>
+                        <span class="text-xs font-black uppercase text-rose-600 tracking-wider">Bagian 6</span>
+                        <h2 class="text-2xl font-black text-slate-900">Latihan Soal Interaktif</h2>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <div class="bg-amber-100 border-2 border-slate-900 px-3 py-1.5 rounded-2xl font-black text-xs text-amber-900 flex items-center gap-1">
+                        <span>🔥 Streak:</span>
+                        <span id="quiz-streak">0</span>
+                    </div>
+                    <div class="bg-emerald-100 border-2 border-slate-900 px-3 py-1.5 rounded-2xl font-black text-xs text-emerald-950 flex items-center gap-1">
+                        <span>⭐ Skor:</span>
+                        <span id="quiz-score">0</span> XP
+                    </div>
+                </div>
+            </div>
+
+            <p class="text-xs sm:text-sm font-semibold text-slate-600">
+                Pilih kategori di bawah untuk berlatih. Terdapat 6 soal untuk setiap kategori (3 Penjumlahan & 3 Pengurangan, Total 24 Soal). Hitung di kertas orat-aret bersusun dulu sebelum memilih jawaban!
+            </p>
+
+            <!-- Quiz Category Selector -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                <button onclick="selectQuizCategory('puluhan')" id="qcat-puluhan" class="comic-btn p-3 bg-indigo-100 border-2 border-slate-900 rounded-2xl text-center space-y-1">
+                    <span class="text-xl">🔢</span>
+                    <h4 class="font-black text-xs text-slate-900">1. Puluhan</h4>
+                    <span class="text-[10px] font-bold text-slate-500 block">6 Soal</span>
+                </button>
+                <button onclick="selectQuizCategory('ratusan')" id="qcat-ratusan" class="comic-btn p-3 bg-slate-100 border-2 border-slate-900 rounded-2xl text-center space-y-1">
+                    <span class="text-xl">💯</span>
+                    <h4 class="font-black text-xs text-slate-900">2. Ratusan</h4>
+                    <span class="text-[10px] font-bold text-slate-500 block">6 Soal</span>
+                </button>
+                <button onclick="selectQuizCategory('ribuan')" id="qcat-ribuan" class="comic-btn p-3 bg-slate-100 border-2 border-slate-900 rounded-2xl text-center space-y-1">
+                    <span class="text-xl">🚀</span>
+                    <h4 class="font-black text-xs text-slate-900">3. Ribuan</h4>
+                    <span class="text-[10px] font-bold text-slate-500 block">6 Soal</span>
+                </button>
+                <button onclick="selectQuizCategory('puluhanribu')" id="qcat-puluhanribu" class="comic-btn p-3 bg-slate-100 border-2 border-slate-900 rounded-2xl text-center space-y-1">
+                    <span class="text-xl">👑</span>
+                    <h4 class="font-black text-xs text-slate-900">4. Puluhan Ribu</h4>
+                    <span class="text-[10px] font-bold text-slate-500 block">6 Soal</span>
+                </button>
+            </div>
+
+            <!-- Active Quiz Box -->
+            <div id="quiz-box" class="bg-gradient-to-br from-indigo-50 via-slate-50 to-amber-50 border-4 border-slate-900 rounded-3xl p-6 comic-card space-y-5">
+                <!-- Quiz question content rendered via JS -->
+            </div>
+        </section>
+
+    </div>
+
+    <footer class="text-center text-xs font-bold text-slate-500 mt-8">
+        Master Bersusun Kelas 5 SD • Pembelajaran Matematika SD Interaktif
+    </footer>
+
+    <script>
+        // --- DATA WARM-UP (6 Soal Perkalian Satuan x Satuan) ---
+        const warmupQuestions = [
+            { id: 1, q: "7 × 6", a: 42, options: [36, 42, 48, 40] },
+            { id: 2, q: "8 × 9", a: 72, options: [64, 72, 81, 78] },
+            { id: 3, q: "6 × 8", a: 48, options: [42, 48, 54, 56] },
+            { id: 4, q: "9 × 7", a: 63, options: [54, 63, 72, 61] },
+            { id: 5, q: "8 × 7", a: 56, options: [49, 54, 56, 64] },
+            { id: 6, q: "9 × 9", a: 81, options: [72, 81, 90, 88] }
+        ];
+
+        let warmupScore = 0;
+
+        function renderWarmup() {
+            const container = document.getElementById('warmup-container');
+            container.innerHTML = '';
+
+            warmupQuestions.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = "bg-amber-50 border-2 border-slate-900 rounded-2xl p-4 flex flex-col justify-between space-y-3";
+                
+                let optsHtml = item.options.map(opt => 
+                    `<button onclick="checkWarmupAnswer(${index}, ${opt}, this)" class="w-full py-1.5 bg-white hover:bg-amber-100 border-2 border-slate-900 rounded-xl font-black text-xs text-slate-800 transition-all">${opt}</button>`
+                ).join('');
+
+                card.innerHTML = `
+                    <div class="flex items-center justify-between">
+                        <span class="text-[10px] font-black bg-amber-200 border border-slate-900 text-amber-950 px-2 py-0.5 rounded-full uppercase">Soal ${index + 1}</span>
+                        <span id="warm-status-${index}" class="text-xs font-bold text-slate-400">❓ Belum Dijawab</span>
+                    </div>
+                    <div class="text-center my-1">
+                        <span class="text-2xl font-black text-slate-900">${item.q} = ?</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2" id="warm-opts-${index}">
+                        ${optsHtml}
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function checkWarmupAnswer(qIndex, selected, btn) {
+            const item = warmupQuestions[qIndex];
+            const optsContainer = document.getElementById(`warm-opts-${qIndex}`);
+            const statusEl = document.getElementById(`warm-status-${qIndex}`);
+
+            if (selected === item.a) {
+                SoundFX.playSuccess();
+                btn.className = "w-full py-1.5 bg-emerald-400 border-2 border-slate-900 rounded-xl font-black text-xs text-slate-900";
+                statusEl.className = "text-xs font-black text-emerald-600";
+                statusEl.innerHTML = "🎉 Benar!";
+                
+                // Disable all buttons in this question
+                const allBtns = optsContainer.querySelectorAll('button');
+                allBtns.forEach(b => b.disabled = true);
+
+                warmupScore++;
+                document.getElementById('warmup-score').textContent = warmupScore;
+            } else {
+                SoundFX.playWrong();
+                btn.disabled = true;
+                btn.className = "w-full py-1.5 bg-rose-400 border-2 border-slate-900 rounded-xl font-black text-xs text-white opacity-60 cursor-not-allowed";
+                statusEl.className = "text-xs font-black text-rose-500";
+                statusEl.innerHTML = "❌ Coba Lagi!";
+            }
+        }
+
+        // --- DATA CONTOH SOAL STEP-BY-STEP ---
+        const exampleData = {
+            puluhan: {
+                title: "1. Kategori Puluhan (Penjumlahan & Pengurangan)",
+                problemAdd: {
+                    type: "Penjumlahan Bersusun",
+                    expr: "87 + 45",
+                    num1: "87",
+                    num2: "45",
+                    carry: ["1", " "],
+                    res: "132",
+                    explanation: [
+                        "<strong>Langkah 1 (Satuan):</strong> 7 + 5 = 12. Tulis angka <strong>2</strong> di bawah, simpan angka <strong>1</strong> di atas kolom puluhan.",
+                        "<strong>Langkah 2 (Puluhan):</strong> 1 (simpanan) + 8 + 4 = 13. Tulis <strong>13</strong>.",
+                        "<strong>Hasil Akhir:</strong> 87 + 45 = <strong>132</strong>"
+                    ]
+                },
+                problemSub: {
+                    type: "Pengurangan Bersusun",
+                    expr: "84 - 39",
+                    num1: "84",
+                    num2: "39",
+                    borrow: ["7", "14"],
+                    res: "45",
+                    explanation: [
+                        "<strong>Langkah 1 (Satuan):</strong> 4 dikurang 9 tidak cukup! Pinjam 1 puluhan dari 8. Angka 8 berubah jadi <strong>7</strong>, dan 4 berubah jadi <strong>14</strong>.",
+                        "<strong>Langkah 2 (Satuan):</strong> 14 - 9 = <strong>5</strong>.",
+                        "<strong>Langkah 3 (Puluhan):</strong> 7 - 3 = <strong>4</strong>.",
+                        "<strong>Hasil Akhir:</strong> 84 - 39 = <strong>45</strong>"
+                    ]
+                }
+            },
+            ratusan: {
+                title: "2. Kategori Ratusan (Penjumlahan & Pengurangan)",
+                problemAdd: {
+                    type: "Penjumlahan Bersusun",
+                    expr: "658 + 275",
+                    num1: "658",
+                    num2: "275",
+                    carry: ["1", "1", " "],
+                    res: "933",
+                    explanation: [
+                        "<strong>Langkah 1 (Satuan):</strong> 8 + 5 = 13. Tulis <strong>3</strong>, simpan <strong>1</strong> di atas puluhan.",
+                        "<strong>Langkah 2 (Puluhan):</strong> 1 + 5 + 7 = 13. Tulis <strong>3</strong>, simpan <strong>1</strong> di atas ratusan.",
+                        "<strong>Langkah 3 (Ratusan):</strong> 1 + 6 + 2 = <strong>9</strong>.",
+                        "<strong>Hasil Akhir:</strong> 658 + 275 = <strong>933</strong>"
+                    ]
+                },
+                problemSub: {
+                    type: "Pengurangan Bersusun",
+                    expr: "724 - 386",
+                    num1: "724",
+                    num2: "386",
+                    borrow: ["6", "11", "14"],
+                    res: "338",
+                    explanation: [
+                        "<strong>Langkah 1 (Satuan):</strong> 4 dikurang 6 tidak bisa. Pinjam dari puluhan (2). Puluhan sisa 1, satuan jadi 14. 14 - 6 = <strong>8</strong>.",
+                        "<strong>Langkah 2 (Puluhan):</strong> 1 dikurang 8 tidak bisa. Pinjam dari ratusan (7). Ratusan sisa 6, puluhan jadi 11. 11 - 8 = <strong>3</strong>.",
+                        "<strong>Langkah 3 (Ratusan):</strong> 6 - 3 = <strong>3</strong>.",
+                        "<strong>Hasil Akhir:</strong> 724 - 386 = <strong>338</strong>"
+                    ]
+                }
+            },
+            ribuan: {
+                title: "3. Kategori Ribuan (Penjumlahan & Pengurangan)",
+                problemAdd: {
+                    type: "Penjumlahan Bersusun",
+                    expr: "4.865 + 3.758",
+                    num1: "4865",
+                    num2: "3758",
+                    carry: ["1", "1", "1", " "],
+                    res: "8623",
+                    explanation: [
+                        "<strong>Satuan:</strong> 5 + 8 = 13 (Tulis 3, simpan 1)",
+                        "<strong>Puluhan:</strong> 1 + 6 + 5 = 12 (Tulis 2, simpan 1)",
+                        "<strong>Ratusan:</strong> 1 + 8 + 7 = 16 (Tulis 6, simpan 1)",
+                        "<strong>Ribuan:</strong> 1 + 4 + 3 = 8",
+                        "<strong>Hasil Akhir:</strong> 4.865 + 3.758 = <strong>8.623</strong>"
+                    ]
+                },
+                problemSub: {
+                    type: "Pengurangan Bersusun",
+                    expr: "8.215 - 3.648",
+                    num1: "8215",
+                    num2: "3648",
+                    borrow: ["7", "11", "10", "15"],
+                    res: "4567",
+                    explanation: [
+                        "<strong>Satuan:</strong> 5 - 8 (pinjam) -> 15 - 8 = 7.",
+                        "<strong>Puluhan:</strong> (0 tersisa) 0 - 4 (pinjam) -> 10 - 4 = 6.",
+                        "<strong>Ratusan:</strong> (1 tersisa) 1 - 6 (pinjam) -> 11 - 6 = 5.",
+                        "<strong>Ribuan:</strong> (7 tersisa) 7 - 3 = 4.",
+                        "<strong>Hasil Akhir:</strong> 8.215 - 3.648 = <strong>4.567</strong>"
+                    ]
+                }
+            },
+            puluhanribu: {
+                title: "4. Kategori Puluhan Ribu (Maks 100.000)",
+                problemAdd: {
+                    type: "Penjumlahan Bersusun",
+                    expr: "47.850 + 38.475",
+                    num1: "47850",
+                    num2: "38475",
+                    carry: ["1", "1", "1", " ", " "],
+                    res: "86325",
+                    explanation: [
+                        "<strong>Satuan:</strong> 0 + 5 = 5",
+                        "<strong>Puluhan:</strong> 5 + 7 = 12 (Tulis 2, simpan 1)",
+                        "<strong>Ratusan:</strong> 1 + 8 + 4 = 13 (Tulis 3, simpan 1)",
+                        "<strong>Ribuan:</strong> 1 + 7 + 8 = 16 (Tulis 6, simpan 1)",
+                        "<strong>Puluhan Ribu:</strong> 1 + 4 + 3 = 8",
+                        "<strong>Hasil Akhir:</strong> 47.850 + 38.475 = <strong>86.325</strong>"
+                    ]
+                },
+                problemSub: {
+                    type: "Pengurangan Bersusun",
+                    expr: "73.500 - 28.650",
+                    num1: "73500",
+                    num2: "28650",
+                    borrow: ["6", "12", "14", "10", "0"],
+                    res: "44850",
+                    explanation: [
+                        "<strong>Satuan:</strong> 0 - 0 = 0",
+                        "<strong>Puluhan:</strong> 0 - 5 (pinjam) -> 10 - 5 = 5",
+                        "<strong>Ratusan:</strong> (4 tersisa) 4 - 6 (pinjam) -> 14 - 6 = 8",
+                        "<strong>Ribuan:</strong> (2 tersisa) 2 - 8 (pinjam) -> 12 - 8 = 4",
+                        "<strong>Puluhan Ribu:</strong> (6 tersisa) 6 - 2 = 4",
+                        "<strong>Hasil Akhir:</strong> 73.500 - 28.650 = <strong>44.850</strong>"
+                    ]
+                }
+            }
+        };
+
+        function formatDigitDisplay(str) {
+            return str.split('').map(d => `<div class="place-val-cell">${d}</div>`).join('');
+        }
+
+        function switchExample(category) {
+            SoundFX.playClick();
+            // Update active tab buttons
+            ['puluhan', 'ratusan', 'ribuan', 'puluhanribu'].forEach(cat => {
+                const btn = document.getElementById(`tab-${cat}`);
+                if (cat === category) {
+                    btn.className = "comic-btn px-4 py-2 bg-indigo-500 text-white border-2 border-slate-900 rounded-xl font-black text-xs sm:text-sm";
+                } else {
+                    btn.className = "comic-btn px-4 py-2 bg-slate-100 text-slate-800 hover:bg-slate-200 border-2 border-slate-900 rounded-xl font-black text-xs sm:text-sm";
+                }
+            });
+
+            const data = exampleData[category];
+            const board = document.getElementById('example-board');
+
+            board.innerHTML = `
+                <h3 class="text-xl font-black text-amber-300 border-b border-slate-700 pb-3">${data.title}</h3>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Addition Example -->
+                    <div class="bg-slate-800 border-2 border-slate-700 rounded-2xl p-4 space-y-3">
+                        <span class="bg-emerald-500 text-slate-950 font-black text-[10px] px-2 py-0.5 rounded-full uppercase">Penjumlahan (+)</span>
+                        <h4 class="text-lg font-black text-white">${data.problemAdd.expr}</h4>
+
+                        <!-- Board Grid -->
+                        <div class="flex justify-center my-2">
+                            <div class="inline-block font-mono">
+                                <!-- Carry Row -->
+                                <div class="flex text-amber-400 text-xs font-bold justify-end h-5">
+                                    ${data.problemAdd.carry.map(c => `<div class="place-val-cell text-xs">${c}</div>`).join('')}
+                                </div>
+                                <!-- Num 1 -->
+                                <div class="flex text-emerald-400 text-xl font-bold justify-end">
+                                    ${formatDigitDisplay(data.problemAdd.num1)}
+                                </div>
+                                <!-- Num 2 -->
+                                <div class="flex text-sky-300 text-xl font-bold justify-end border-b-2 border-white pb-1 relative">
+                                    <span class="absolute right-[-24px] bottom-2 text-white font-black text-xl">+</span>
+                                    ${formatDigitDisplay(data.problemAdd.num2)}
+                                </div>
+                                <!-- Result -->
+                                <div class="flex text-amber-300 text-2xl font-black justify-end pt-1">
+                                    ${formatDigitDisplay(data.problemAdd.res)}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step Explanations -->
+                        <div class="bg-slate-900 rounded-xl p-3 text-xs text-slate-300 space-y-1 font-sans">
+                            ${data.problemAdd.explanation.map(exp => `<p>• ${exp}</p>`).join('')}
+                        </div>
+                    </div>
+
+                    <!-- Subtraction Example -->
+                    <div class="bg-slate-800 border-2 border-slate-700 rounded-2xl p-4 space-y-3">
+                        <span class="bg-amber-500 text-slate-950 font-black text-[10px] px-2 py-0.5 rounded-full uppercase">Pengurangan (-)</span>
+                        <h4 class="text-lg font-black text-white">${data.problemSub.expr}</h4>
+
+                        <!-- Board Grid -->
+                        <div class="flex justify-center my-2">
+                            <div class="inline-block font-mono">
+                                <!-- Borrow Row -->
+                                <div class="flex text-amber-400 text-xs font-bold justify-end h-5">
+                                    ${data.problemSub.borrow.map(b => `<div class="place-val-cell text-xs">${b}</div>`).join('')}
+                                </div>
+                                <!-- Num 1 -->
+                                <div class="flex text-emerald-400 text-xl font-bold justify-end">
+                                    ${formatDigitDisplay(data.problemSub.num1)}
+                                </div>
+                                <!-- Num 2 -->
+                                <div class="flex text-sky-300 text-xl font-bold justify-end border-b-2 border-white pb-1 relative">
+                                    <span class="absolute right-[-24px] bottom-2 text-white font-black text-xl">-</span>
+                                    ${formatDigitDisplay(data.problemSub.num2)}
+                                </div>
+                                <!-- Result -->
+                                <div class="flex text-amber-300 text-2xl font-black justify-end pt-1">
+                                    ${formatDigitDisplay(data.problemSub.res)}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step Explanations -->
+                        <div class="bg-slate-900 rounded-xl p-3 text-xs text-slate-300 space-y-1 font-sans">
+                            ${data.problemSub.explanation.map(exp => `<p>• ${exp}</p>`).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- DATA LATIHAN SOAL INTERAKTIF (24 SOAL TOTAL: 6 PER KATEGORI) ---
+        const practiceQuizData = {
+            puluhan: [
+                { id: 1, type: "add", num1: 67, num2: 48, ans: 115, opts: [105, 115, 125, 112] },
+                { id: 2, type: "sub", num1: 92, num2: 47, ans: 45, opts: [45, 55, 43, 51] },
+                { id: 3, type: "add", num1: 89, num2: 76, ans: 165, opts: [155, 165, 175, 159] },
+                { id: 4, type: "sub", num1: 80, num2: 36, ans: 44, opts: [54, 44, 46, 34] },
+                { id: 5, type: "add", num1: 58, num2: 64, ans: 122, opts: [112, 122, 132, 128] },
+                { id: 6, type: "sub", num1: 70, num2: 28, ans: 42, opts: [52, 42, 48, 58] }
+            ],
+            ratusan: [
+                { id: 1, type: "add", num1: 486, num2: 375, ans: 861, opts: [851, 861, 871, 761] },
+                { id: 2, type: "sub", num1: 832, num2: 457, ans: 375, opts: [375, 385, 365, 475] },
+                { id: 3, type: "add", num1: 629, num2: 284, ans: 913, opts: [903, 913, 923, 893] },
+                { id: 4, type: "sub", num1: 500, num2: 273, ans: 227, opts: [327, 227, 237, 337] }, // Pengurangan 0 Beruntun
+                { id: 5, type: "add", num1: 748, num2: 563, ans: 1311, opts: [1211, 1311, 1301, 1411] },
+                { id: 6, type: "sub", num1: 700, num2: 348, ans: 352, opts: [452, 352, 362, 462] }  // Pengurangan 0 Beruntun
+            ],
+            ribuan: [
+                { id: 1, type: "add", num1: 5482, num2: 3769, ans: 9251, opts: [9151, 9251, 9351, 9241] },
+                { id: 2, type: "sub", num1: 7240, num2: 3865, ans: 3375, opts: [3375, 3475, 3275, 3385] },
+                { id: 3, type: "add", num1: 8435, num2: 6789, ans: 15224, opts: [15124, 15224, 15324, 14224] },
+                { id: 4, type: "sub", num1: 4000, num2: 1625, ans: 2375, opts: [3375, 2375, 2475, 3425] }, // Pengurangan 0 Beruntun
+                { id: 5, type: "add", num1: 6750, num2: 5890, ans: 12640, opts: [12540, 12640, 11640, 12740] },
+                { id: 6, type: "sub", num1: 9102, num2: 4538, ans: 4564, opts: [4564, 4664, 4464, 5564] }
+            ],
+            puluhanribu: [
+                { id: 1, type: "add", num1: 34850, num2: 27680, ans: 62530, opts: [61530, 62530, 63530, 62430] },
+                { id: 2, type: "sub", num1: 65200, num2: 28450, ans: 36750, opts: [36750, 37750, 35750, 36850] },
+                { id: 3, type: "add", num1: 48920, num2: 36480, ans: 85400, opts: [84400, 85400, 86400, 85300] },
+                { id: 4, type: "sub", num1: 10000, num2: 3480, ans: 6520, opts: [7520, 6520, 6620, 7620] }, // Pengurangan 0 Beruntun
+                { id: 5, type: "add", num1: 52600, num2: 38750, ans: 91350, opts: [90350, 91350, 92350, 91250] },
+                { id: 6, type: "sub", num1: 50000, num2: 23640, ans: 26360, opts: [36360, 26360, 27360, 37360] } // Pengurangan 0 Beruntun
+            ]
+        };
+
+        let currentQuizCategory = 'puluhan';
+        let currentQuizIndex = 0;
+        let quizScore = 0;
+        let quizStreak = 0;
+
+        function selectQuizCategory(category) {
+            SoundFX.playClick();
+            currentQuizCategory = category;
+            currentQuizIndex = 0;
+
+            ['puluhan', 'ratusan', 'ribuan', 'puluhanribu'].forEach(cat => {
+                const btn = document.getElementById(`qcat-${cat}`);
+                if (cat === category) {
+                    btn.className = "comic-btn p-3 bg-indigo-500 text-white border-2 border-slate-900 rounded-2xl text-center space-y-1";
+                } else {
+                    btn.className = "comic-btn p-3 bg-slate-100 text-slate-800 hover:bg-slate-200 border-2 border-slate-900 rounded-2xl text-center space-y-1";
+                }
+            });
+
+            loadQuizQuestion();
+        }
+
+        function loadQuizQuestion() {
+            const quizList = practiceQuizData[currentQuizCategory];
+            const q = quizList[currentQuizIndex];
+            const quizBox = document.getElementById('quiz-box');
+
+            const opSign = q.type === 'add' ? '+' : '-';
+            const catNames = {
+                puluhan: '🔢 Puluhan',
+                ratusan: '💯 Ratusan',
+                ribuan: '🚀 Ribuan',
+                puluhanribu: '👑 Puluhan Ribu'
+            };
+
+            // Shuffle option buttons
+            const shuffledOpts = [...q.opts].sort(() => Math.random() - 0.5);
+
+            let optsHtml = shuffledOpts.map(opt => `
+                <button onclick="checkPracticeAnswer(${opt}, this)" class="opt-btn comic-btn p-4 bg-white hover:bg-indigo-50 border-2 border-slate-900 rounded-2xl font-black text-slate-800 text-lg sm:text-xl text-center transition-all">
+                    ${opt.toLocaleString('id-ID')}
+                </button>
+            `).join('');
+
+            quizBox.innerHTML = `
+                <div class="flex items-center justify-between">
+                    <span class="px-3 py-1 bg-indigo-100 border border-slate-900 text-indigo-950 rounded-xl text-xs font-black uppercase">
+                        ${catNames[currentQuizCategory]} • Soal ${currentQuizIndex + 1} dari 6
+                    </span>
+                    <span class="text-xs font-bold text-slate-500">Hitung dengan cermat!</span>
+                </div>
+
+                <!-- Math Visual Display -->
+                <div class="bg-white border-4 border-slate-900 rounded-2xl p-6 text-center space-y-2 relative overflow-hidden comic-card">
+                    <span class="text-[10px] font-black text-indigo-700 uppercase tracking-widest bg-indigo-100 px-3 py-1 rounded-full border border-slate-900 inline-block mb-1">
+                        ${q.type === 'add' ? 'Hitung Penjumlahan Bersusun' : 'Hitung Pengurangan Bersusun'}
+                    </span>
+
+                    <div class="flex items-center justify-center gap-3 text-3xl sm:text-5xl font-black text-slate-900 tracking-wider my-3 font-mono">
+                        <span class="text-emerald-600">${q.num1.toLocaleString('id-ID')}</span>
+                        <span class="text-slate-400">${opSign}</span>
+                        <span class="text-sky-600">${q.num2.toLocaleString('id-ID')}</span>
+                        <span class="text-slate-400">=</span>
+                        <span class="text-amber-500">?</span>
+                    </div>
+
+                    <p class="text-xs text-slate-500 font-bold">💡 Gunakan kertas corat-coret untuk menghitung bersusun ke bawah!</p>
+                </div>
+
+                <!-- Options Grid -->
+                <div class="grid grid-cols-2 gap-3" id="practice-opts-container">
+                    ${optsHtml}
+                </div>
+
+                <!-- Feedback Area -->
+                <div id="practice-feedback" class="hidden p-3.5 rounded-2xl border-2 border-slate-900 text-center font-black text-sm flex items-center justify-center gap-2"></div>
+
+                <!-- Next Question Navigation Button -->
+                <button id="next-quiz-btn" onclick="nextQuizQuestion()" class="hidden w-full comic-btn py-3 bg-emerald-400 hover:bg-emerald-500 border-2 border-slate-900 rounded-2xl font-black text-sm text-slate-900 flex items-center justify-center gap-2">
+                    Lanjut Soal Berikutnya <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            `;
+        }
+
+        function checkPracticeAnswer(selected, btn) {
+            const quizList = practiceQuizData[currentQuizCategory];
+            const q = quizList[currentQuizIndex];
+            const feedback = document.getElementById('practice-feedback');
+            const nextBtn = document.getElementById('next-quiz-btn');
+            const optsContainer = document.getElementById('practice-opts-container');
+
+            feedback.classList.remove('hidden');
+
+            if (selected === q.ans) {
+                // Jawaban Benar!
+                SoundFX.playSuccess();
+                quizScore += 10;
+                quizStreak += 1;
+
+                document.getElementById('quiz-score').textContent = quizScore;
+                document.getElementById('quiz-streak').textContent = quizStreak;
+
+                // Disable all option buttons and highlight the correct button
+                const allBtns = optsContainer.querySelectorAll('.opt-btn');
+                allBtns.forEach(b => {
+                    b.disabled = true;
+                    b.classList.add('opacity-70', 'cursor-not-allowed');
+                });
+
+                btn.disabled = false;
+                btn.classList.remove('opacity-70', 'cursor-not-allowed');
+                btn.className = "opt-btn comic-btn p-4 bg-emerald-400 border-2 border-slate-900 rounded-2xl font-black text-slate-900 text-lg sm:text-xl text-center";
+
+                feedback.className = "p-3.5 rounded-2xl border-2 border-slate-900 text-center font-black text-sm bg-emerald-100 text-emerald-950 flex items-center justify-center gap-2";
+                feedback.innerHTML = `<span>🎉</span> <span>HEBAT! Jawabanmu Tepat Sekali (+10 XP)</span>`;
+
+                nextBtn.classList.remove('hidden');
+            } else {
+                // Jawaban Salah
+                SoundFX.playWrong();
+                quizStreak = 0;
+                document.getElementById('quiz-streak').textContent = quizStreak;
+
+                btn.disabled = true;
+                btn.className = "opt-btn comic-btn p-4 bg-rose-400 border-2 border-slate-900 rounded-2xl font-black text-white text-lg sm:text-xl text-center opacity-60 cursor-not-allowed";
+
+                feedback.className = "p-3.5 rounded-2xl border-2 border-slate-900 text-center font-black text-sm bg-rose-100 text-rose-950 flex items-center justify-center gap-2";
+                feedback.innerHTML = `<span>❌</span> <span>Kurang tepat! Hitung ulang di kertas dan coba pilih jawaban lain.</span>`;
+
+                nextBtn.classList.add('hidden');
+            }
+        }
+
+        function nextQuizQuestion() {
+            SoundFX.playClick();
+            const quizList = practiceQuizData[currentQuizCategory];
+            if (currentQuizIndex < quizList.length - 1) {
+                currentQuizIndex++;
+                loadQuizQuestion();
+            } else {
+                // Finished category
+                const quizBox = document.getElementById('quiz-box');
+                quizBox.innerHTML = `
+                    <div class="text-center p-6 space-y-4">
+                        <span class="text-5xl">🏆</span>
+                        <h3 class="text-2xl font-black text-slate-900">Selamat! Kategori Ini Selesai!</h3>
+                        <p class="text-sm font-bold text-slate-600">Kamu telah menyelesaikan seluruh 6 soal di kategori ini dengan baik!</p>
+                        <button onclick="selectQuizCategory('puluhan')" class="comic-btn px-6 py-3 bg-indigo-500 hover:bg-indigo-600 text-white font-black text-sm rounded-2xl border-2 border-slate-900">
+                            Pilih Kategori Lain
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        // --- INITIALIZATION ---
+        window.onload = function() {
+            renderWarmup();
+            switchExample('puluhan');
+            selectQuizCategory('puluhan');
+        };
+    </script>
+</body>
+</html>
