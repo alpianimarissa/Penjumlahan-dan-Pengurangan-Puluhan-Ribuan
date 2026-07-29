@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tips & Trik Penjumlahan dan Pengurangan (s.d. 100.000)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #f8fafc;
+        }
+        .pop-in {
+            animation: popIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        @keyframes popIn {
+            0% { opacity: 0; transform: scale(0.95); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        .glow-emerald {
+            box-shadow: 0 0 20px -3px rgba(16, 185, 129, 0.3);
+        }
+    </style>
+</head>
+<body class="min-h-screen text-slate-800 bg-slate-50 flex flex-col justify-between selection:bg-emerald-500 selection:text-white pb-12">
+
+    <header class="bg-gradient-to-r from-teal-700 via-emerald-700 to-indigo-800 text-white shadow-xl sticky top-0 z-40">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
+            <div class="flex items-center gap-3">
+                <div class="bg-white/20 p-2.5 rounded-2xl backdrop-blur-md flex items-center justify-center text-2xl font-black shadow-inner">
+                    ⚡
+                </div>
+                <div>
+                    <h1 class="text-lg md:text-xl font-bold tracking-tight leading-tight">Penjumlahan & Pengurangan Cepat</h1>
+                    <p class="text-xs text-emerald-100 font-medium">Bilangan Cacah Hingga 100.000 • Modul Interaktif</p>
+                </div>
+            </div>
+
+            <!-- Header Audio & Quick Navigation -->
+            <div class="flex items-center gap-2 bg-black/20 p-1.5 rounded-2xl backdrop-blur-md text-xs font-semibold">
+                <a href="#tujuan" class="px-2.5 py-1.5 hover:bg-white/10 rounded-xl transition-all">Tujuan</a>
+                <a href="#warmup" class="px-2.5 py-1.5 hover:bg-white/10 rounded-xl transition-all">Warm-Up</a>
+                <a href="#konsep" class="px-2.5 py-1.5 hover:bg-white/10 rounded-xl transition-all">Trik Cepat</a>
+                <a href="#simulator" class="px-2.5 py-1.5 hover:bg-white/10 rounded-xl transition-all">Simulator</a>
+                <a href="#latihan" class="px-2.5 py-1.5 bg-emerald-500 text-white hover:bg-emerald-400 rounded-xl transition-all">Latihan</a>
+                <button id="soundToggleBtn" onclick="toggleSound()" class="p-1.5 hover:bg-white/10 rounded-xl transition-all text-base" title="Matikan/Hidupkan Suara">
+                    🔊
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-4 py-8 w-full flex-1 flex flex-col gap-10">
+
+        <section id="tujuan" class="bg-white rounded-3xl p-6 md:p-8 shadow-md border border-slate-200/80 pop-in relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-100/50 rounded-full blur-2xl -mr-10 -mt-10 pointer-events-none"></div>
+            <div class="flex items-center gap-3 mb-4">
+                <span class="bg-emerald-100 text-emerald-700 text-2xl p-2.5 rounded-2xl">🎯</span>
+                <div>
+                    <h2 class="text-xl md:text-2xl font-bold text-slate-800">1. Tujuan Pembelajaran</h2>
+                    <p class="text-xs md:text-sm text-slate-500">Capaian yang akan kamu kuasai setelah mempelajari modul ini</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm mt-4">
+                <div class="flex items-start gap-3 p-4 rounded-2xl bg-slate-50 border border-slate-100 hover:border-emerald-200 transition-all">
+                    <span class="text-emerald-600 font-extrabold text-base">✓</span>
+                    <div>
+                        <strong class="text-slate-800">Menghitung Akurat:</strong>
+                        <p class="text-slate-600 text-xs mt-0.5">Mampu melakukan penjumlahan dan pengurangan bersusun hingga 100.000 dengan teknik menyimpan/meminjam secara teliti.</p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-3 p-4 rounded-2xl bg-slate-50 border border-slate-100 hover:border-emerald-200 transition-all">
+                    <span class="text-emerald-600 font-extrabold text-base">✓</span>
+                    <div>
+                        <strong class="text-slate-800">Menguasai Trik Mental Math:</strong>
+                        <p class="text-slate-600 text-xs mt-0.5">Menggunakan trik *Kompensasi*, *Selisih Konstan*, dan *Kiri-ke-Kanan* untuk berhitung lebih cepat tanpa orak-arik panjang.</p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-3 p-4 rounded-2xl bg-slate-50 border border-slate-100 hover:border-emerald-200 transition-all">
+                    <span class="text-emerald-600 font-extrabold text-base">✓</span>
+                    <div>
+                        <strong class="text-slate-800">Trik Bebas Pinjam-Nol:</strong>
+                        <p class="text-slate-600 text-xs mt-0.5">Menyelesaikan pengurangan angka berakhiran nol banyak (seperti 50.000 - 18.245) tanpa ribet meminjam beruntun.</p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-3 p-4 rounded-2xl bg-slate-50 border border-slate-100 hover:border-emerald-200 transition-all">
+                    <span class="text-emerald-600 font-extrabold text-base">✓</span>
+                    <div>
+                        <strong class="text-slate-800">Penerapan Kehidupan Nyata:</strong>
+                        <p class="text-slate-600 text-xs mt-0.5">Menerapkan perhitungan cepat untuk estimasi belanja, transaksi uang kembalian, dan tabungan.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <section id="warmup" class="bg-white rounded-3xl p-6 md:p-8 shadow-md border border-slate-200/80 space-y-6">
+            <div class="flex items-center justify-between flex-wrap gap-3">
+                <div class="flex items-center gap-3">
+                    <span class="bg-amber-100 text-amber-700 text-2xl p-2.5 rounded-2xl">🔥</span>
+                    <div>
+                        <h2 class="text-xl md:text-2xl font-bold text-slate-800">2. Warm-Up (Pemanasan Otak)</h2>
+                        <p class="text-xs md:text-sm text-slate-500">Jawab 6 soal cepat ini untuk menguji daya tanggap otakmu!</p>
+                    </div>
+                </div>
+                <div class="bg-amber-50 border border-amber-200 px-3 py-1.5 rounded-xl text-xs font-bold text-amber-800 flex items-center gap-1.5">
+                    <span>Terjawab:</span>
+                    <span id="warmupProgress" class="text-amber-600 font-black">0 / 6</span>
+                </div>
+            </div>
+
+            <!-- Warm-up Grid -->
+            <div id="warmupGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <!-- Javascript will populate 6 interactive warmup cards -->
+            </div>
+        </section>
+
+
+        <section id="koneksi" class="bg-gradient-to-br from-indigo-900 to-slate-900 text-white rounded-3xl p-6 md:p-8 shadow-xl relative overflow-hidden">
+            <div class="absolute -bottom-10 -right-10 w-60 h-60 bg-teal-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="flex items-center gap-3 mb-6">
+                <span class="bg-white/10 text-emerald-300 text-2xl p-2.5 rounded-2xl backdrop-blur-md">🌐</span>
+                <div>
+                    <h2 class="text-xl md:text-2xl font-bold">3. Koneksi Dunia Nyata</h2>
+                    <p class="text-xs md:text-sm text-slate-300">Kenapa kita butuh trik cepat menghitung hingga 100.000?</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5 text-slate-200 text-xs md:text-sm">
+                <div class="bg-white/10 p-5 rounded-2xl border border-white/10 space-y-2 backdrop-blur-sm">
+                    <div class="text-2xl">🛒</div>
+                    <strong class="text-white text-sm block">Kasir & Estimasi Belanja</strong>
+                    <p class="text-slate-300 leading-relaxed">Saat belanja di minimarket senilai <b>Rp38.500</b> dan <b>Rp21.500</b>, kamu bisa langsung tahu totalnya <b>Rp60.000</b> di kepala sebelum kasir menghitung!</p>
+                </div>
+                <div class="bg-white/10 p-5 rounded-2xl border border-white/10 space-y-2 backdrop-blur-sm">
+                    <div class="text-2xl">💵</div>
+                    <strong class="text-white text-sm block">Uang Kembalian Cepat</strong>
+                    <p class="text-slate-300 leading-relaxed">Bayar belanjaan <b>Rp64.200</b> memakai uang lembar <b>Rp100.000</b>? Pakai Trik Komplemen untuk tahu kembalianmu <b>Rp35.800</b> tanpa ragu.</p>
+                </div>
+                <div class="bg-white/10 p-5 rounded-2xl border border-white/10 space-y-2 backdrop-blur-sm">
+                    <div class="text-2xl">📈</div>
+                    <strong class="text-white text-sm block">Target Tabungan & Usaha</strong>
+                    <p class="text-slate-300 leading-relaxed">Menghitung selisih target tabungan <b>Rp85.000</b> dengan tabungan saat ini <b>Rp47.000</b> secara kilat untuk merencanakan keuangan.</p>
+                </div>
+            </div>
+        </section>
+
+
+        <section id="konsep" class="bg-white rounded-3xl p-6 md:p-8 shadow-md border border-slate-200/80 space-y-8">
+            <div class="flex items-center gap-3">
+                <span class="bg-sky-100 text-sky-700 text-2xl p-2.5 rounded-2xl">⚡</span>
+                <div>
+                    <h2 class="text-xl md:text-2xl font-bold text-slate-800">4. Konsep Inti & Trik Cepat Super</h2>
+                    <p class="text-xs md:text-sm text-slate-500">Bandingkan metode sekolah (bersusun) vs Trik Cepat Otak (Mental Math)</p>
+                </div>
+            </div>
+
+            <!-- Tab Buttons for Tricks -->
+            <div class="flex flex-wrap gap-2 border-b border-slate-200 pb-3">
+                <button onclick="switchTrickTab('add-comp')" id="tab-add-comp" class="trick-tab-btn px-4 py-2 rounded-xl font-bold text-xs md:text-sm transition-all bg-emerald-600 text-white shadow-md">
+                    ➕ 1. Kompensasi (Penjumlahan)
+                </button>
+                <button onclick="switchTrickTab('add-ltr')" id="tab-add-ltr" class="trick-tab-btn px-4 py-2 rounded-xl font-bold text-xs md:text-sm text-slate-600 hover:bg-slate-100 transition-all">
+                    ➕ 2. Kiri ke Kanan
+                </button>
+                <button onclick="switchTrickTab('sub-constant')" id="tab-sub-constant" class="trick-tab-btn px-4 py-2 rounded-xl font-bold text-xs md:text-sm text-slate-600 hover:bg-slate-100 transition-all">
+                    ➖ 3. Selisih Konstan (Bebas Pinjam Nol)
+                </button>
+                <button onclick="switchTrickTab('sub-all9')" id="tab-sub-all9" class="trick-tab-btn px-4 py-2 rounded-xl font-bold text-xs md:text-sm text-slate-600 hover:bg-slate-100 transition-all">
+                    ➖ 4. Aturan All from 9, Last from 10
+                </button>
+            </div>
+
+            <!-- Trick Tab Content Container -->
+            <div id="trickContentArea" class="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-4">
+                <!-- Javascript will switch content here -->
+            </div>
+        </section>
+
+
+        <section id="simulator" class="bg-emerald-900 text-white rounded-3xl p-6 md:p-8 shadow-xl space-y-6">
+            <div class="flex items-center gap-3">
+                <span class="bg-emerald-700/80 text-emerald-200 text-2xl p-2.5 rounded-2xl border border-emerald-500/30">🛠️</span>
+                <div>
+                    <h2 class="text-xl md:text-2xl font-bold">5. Simulator Trik Cepat Interaktif</h2>
+                    <p class="text-xs md:text-sm text-emerald-200">Masukkan angka sendiri (s.d. 100.000) dan lihat langkah trik cepatnya secara otomatis!</p>
+                </div>
+            </div>
+
+            <div class="bg-emerald-950/60 p-5 rounded-2xl border border-emerald-700/50 space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-emerald-300 mb-1">Angka Pertama (A):</label>
+                        <input type="number" id="simNumA" value="50000" max="100000" min="1" class="w-full bg-slate-900 text-white border border-emerald-700 px-3.5 py-2.5 rounded-xl font-bold text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-emerald-300 mb-1">Operasi:</label>
+                        <select id="simOp" class="w-full bg-slate-900 text-white border border-emerald-700 px-3.5 py-2.5 rounded-xl font-bold text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400">
+                            <option value="sub_zero">Pengurangan dari Ratusan/Ribuan Bulat (Trik Bebas Pinjam)</option>
+                            <option value="add_comp">Penjumlahan Pembulatan (Trik Kompensasi)</option>
+                            <option value="add_ltr">Penjumlahan Kiri ke Kanan (Dekomposisi)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-emerald-300 mb-1">Angka Kedua (B):</label>
+                        <input type="number" id="simNumB" value="23684" max="100000" min="1" class="w-full bg-slate-900 text-white border border-emerald-700 px-3.5 py-2.5 rounded-xl font-bold text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400">
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap gap-2 pt-1">
+                    <button onclick="runSimulator()" class="py-2.5 px-6 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black rounded-xl text-xs md:text-sm shadow-lg transition-all active:scale-95">
+                        ⚡ Hitung Trik Cepat Sekarang
+                    </button>
+                    <button onclick="presetSimulator(100000, 34782, 'sub_zero')" class="py-2 px-3 bg-white/10 hover:bg-white/20 text-xs rounded-xl transition-all">
+                        Contoh: 100.000 - 34.782
+                    </button>
+                    <button onclick="presetSimulator(48995, 23450, 'add_comp')" class="py-2 px-3 bg-white/10 hover:bg-white/20 text-xs rounded-xl transition-all">
+                        Contoh: 48.995 + 23.450
+                    </button>
+                </div>
+            </div>
+
+            <!-- Simulator Output Card -->
+            <div id="simResultCard" class="bg-slate-900 p-6 rounded-2xl border border-emerald-500/30 text-xs md:text-sm space-y-3 font-mono">
+                <!-- Javascript Output Here -->
+            </div>
+        </section>
+
+
+        <section id="latihan" class="bg-white rounded-3xl p-6 md:p-8 shadow-md border border-slate-200/80 space-y-6">
+            <div class="flex items-center justify-between flex-wrap gap-3">
+                <div class="flex items-center gap-3">
+                    <span class="bg-indigo-100 text-indigo-700 text-2xl p-2.5 rounded-2xl">📝</span>
+                    <div>
+                        <h2 class="text-xl md:text-2xl font-bold text-slate-800">6. Latihan Soal Interaktif</h2>
+                        <p class="text-xs md:text-sm text-slate-500">Uji pemahamanmu dan gunakan trik cepat yang sudah dipelajari!</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <div class="bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-xl text-xs font-bold text-emerald-700">
+                        ⭐ Skor: <span id="quizScore" class="font-extrabold text-sm">0</span>
+                    </div>
+                    <div class="bg-amber-50 border border-amber-200 px-3 py-1.5 rounded-xl text-xs font-bold text-amber-700">
+                        🔥 Streak: <span id="quizStreak" class="font-extrabold text-sm">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quiz Main Box -->
+            <div class="bg-slate-50 p-6 rounded-3xl border border-slate-200 space-y-5">
+                <div class="flex items-center justify-between text-xs font-bold text-slate-400 uppercase tracking-wider">
+                    <span id="quizBadge" class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-[11px]">Kategori Soal</span>
+                    <span id="quizIndexText">Soal #1</span>
+                </div>
+
+                <div class="space-y-2">
+                    <h3 id="quizQuestionPrompt" class="text-base md:text-lg font-bold text-slate-800 leading-relaxed">
+                        Loading soal...
+                    </h3>
+                    <div id="quizTargetDisplay" class="bg-white p-4 rounded-2xl border border-slate-200 text-center font-extrabold text-2xl md:text-3xl text-indigo-900 shadow-inner">
+                        -
+                    </div>
+                </div>
+
+                <!-- Options -->
+                <div id="quizOptionsContainer" class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2">
+                    <!-- Dynamic choices -->
+                </div>
+
+                <!-- Feedback Box -->
+                <div id="quizFeedbackBox" class="hidden p-4 rounded-2xl border transition-all space-y-2">
+                    <div class="flex items-start gap-3">
+                        <span id="quizFeedbackIcon" class="text-2xl"></span>
+                        <div>
+                            <h4 id="quizFeedbackTitle" class="font-bold text-sm"></h4>
+                            <p id="quizFeedbackText" class="text-xs text-slate-600 leading-relaxed mt-0.5"></p>
+                        </div>
+                    </div>
+                    <button onclick="nextQuizQuestion()" class="w-full py-3 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-xl text-xs shadow-md transition-all mt-2">
+                        Lanjut ke Soal Berikutnya ➔
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-white border-t border-slate-200 py-6 text-center text-xs text-slate-500">
+        <p class="font-semibold text-slate-600">Modul Interaktif Matematika • Penjumlahan & Pengurangan Bilangan Cacah s.d. 100.000</p>
+        <p class="mt-1 text-slate-400">Dirancang khusus untuk pembelajaran mandiri yang menyenangkan dan efektif.</p>
+    </footer>
+
+    <!-- Canvas for Particle Confetti -->
+    <canvas id="confettiCanvas" class="fixed inset-0 pointer-events-none z-50"></canvas>
+
+    <script>
+        // --- Web Audio Synthesizer ---
+        let soundEnabled = true;
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function playSound(type) {
+            if (!soundEnabled || !audioCtx) return;
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            const now = audioCtx.currentTime;
+
+            if (type === 'correct') {
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(523.25, now);
+                osc.frequency.exponentialRampToValueAtTime(659.25, now + 0.1);
+                osc.frequency.exponentialRampToValueAtTime(783.99, now + 0.2);
+                gain.gain.setValueAtTime(0.15, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.35);
+                osc.start(now);
+                osc.stop(now + 0.35);
+            } else if (type === 'wrong') {
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(220, now);
+                osc.frequency.exponentialRampToValueAtTime(140, now + 0.2);
+                gain.gain.setValueAtTime(0.15, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+                osc.start(now);
+                osc.stop(now + 0.3);
+            } else if (type === 'click') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(450, now);
+                gain.gain.setValueAtTime(0.04, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
+                osc.start(now);
+                osc.stop(now + 0.04);
+            }
+        }
+
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            document.getElementById('soundToggleBtn').innerText = soundEnabled ? '🔊' : '🔇';
+        }
+
+        function formatNum(n) {
+            return n.toLocaleString('id-ID');
+        }
+
+        // --- STREAMING_CHUNK: Section 2 Warm-up Data & Logic ---
+        const warmupQuestions = [
+            { id: 1, q: "400 + 600 = ?", ans: 1000, opts: [900, 1000, 1100] },
+            { id: 2, q: "1.000 - 350 = ?", ans: 650, opts: [650, 750, 550] },
+            { id: 3, q: "5.000 + 4.500 = ?", ans: 9500, opts: [9000, 9500, 10000] },
+            { id: 4, q: "10.000 - 1 = ?", ans: 9999, opts: [9900, 9999, 9000] },
+            { id: 5, q: "25.000 + 25.000 = ?", ans: 50000, opts: [45000, 50000, 55000] },
+            { id: 6, q: "100.000 - 20.000 = ?", ans: 80000, opts: [70000, 80000, 90000] }
+        ];
+
+        let answeredWarmupCount = 0;
+
+        function renderWarmup() {
+            const grid = document.getElementById('warmupGrid');
+            grid.innerHTML = '';
+
+            warmupQuestions.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = "bg-slate-50 p-4 rounded-2xl border border-slate-200 flex flex-col justify-between gap-3 text-center";
+                card.id = `warmup-card-${item.id}`;
+
+                let optsHtml = `<div class="grid grid-cols-3 gap-1.5">`;
+                item.opts.forEach(opt => {
+                    optsHtml += `<button onclick="checkWarmup(${item.id}, ${opt}, ${item.ans})" class="py-2 bg-white hover:bg-amber-100 border border-slate-200 rounded-xl text-xs font-bold text-slate-700 transition-all active:scale-95">${formatNum(opt)}</button>`;
+                });
+                optsHtml += `</div>`;
+
+                card.innerHTML = `
+                    <div class="text-xs font-extrabold text-amber-600 uppercase tracking-wide">Soal #${index+1}</div>
+                    <div class="text-base md:text-lg font-black text-slate-800">${item.q}</div>
+                    <div id="warmup-action-${item.id}">${optsHtml}</div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function checkWarmup(id, selected, correct) {
+            playSound('click');
+            const actionDiv = document.getElementById(`warmup-action-${id}`);
+            const cardDiv = document.getElementById(`warmup-card-${id}`);
+
+            if (selected === correct) {
+                playSound('correct');
+                cardDiv.classList.remove('bg-slate-50', 'border-slate-200');
+                cardDiv.classList.add('bg-emerald-50', 'border-emerald-300');
+                actionDiv.innerHTML = `<div class="text-xs font-bold text-emerald-700 bg-emerald-200/60 py-2 rounded-xl">✓ Benar! (${formatNum(correct)})</div>`;
+            } else {
+                playSound('wrong');
+                cardDiv.classList.remove('bg-slate-50', 'border-slate-200');
+                cardDiv.classList.add('bg-rose-50', 'border-rose-300');
+                actionDiv.innerHTML = `<div class="text-xs font-bold text-rose-700 bg-rose-200/60 py-2 rounded-xl">✗ Jawaban tepat: ${formatNum(correct)}</div>`;
+            }
+
+            answeredWarmupCount++;
+            document.getElementById('warmupProgress').innerText = `${answeredWarmupCount} / 6`;
+            if (answeredWarmupCount === 6) {
+                triggerConfetti();
+            }
+        }
+
+
+        // --- STREAMING_CHUNK: Section 4 Trick Tabs Logic & Content ---
+        const trickContents = {
+            'add-comp': `
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between">
+                        <h3 class="font-extrabold text-emerald-800 text-base md:text-lg">💡 Trik 1: Penjumlahan Kompensasi (Bulatkan Dulu)</h3>
+                        <span class="bg-emerald-100 text-emerald-800 text-xs px-3 py-1 rounded-full font-bold">Cocok untuk angka dekat ribuan/ratusan (seperti 995, 9.900)</span>
+                    </div>
+                    <p class="text-xs md:text-sm text-slate-600 leading-relaxed">
+                        Jika salah satu angka mendekati bilangan bulat manis (seperti 40.000 atau 10.000), <b>tambahkan kekurangannya dulu</b> agar mudah dijumlahkan di kepala, lalu <b>kurangi lagi</b> hasilnya dengan angka penambah tadi!
+                    </p>
+                    <div class="bg-white p-4 rounded-xl border border-emerald-200 space-y-2 text-xs md:text-sm">
+                        <strong class="text-slate-800 font-bold block">Contoh Soal: 38.995 + 14.250 = ... ?</strong>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-2">
+                            <div class="p-3 bg-rose-50 border border-rose-200 rounded-xl">
+                                <span class="font-bold text-rose-700 text-xs block mb-1">🐢 Cara Biasa Bersusun (Lama):</span>
+                                <p class="text-slate-600">Perlu menyimpan angka 1 berulang kali dari satuan ke ribuan secara bersusun bawah.</p>
+                            </div>
+                            <div class="p-3 bg-emerald-50 border border-emerald-300 rounded-xl space-y-1">
+                                <span class="font-bold text-emerald-800 text-xs block mb-1">⚡ Cara Cepat Kompensasi (Mental Math):</span>
+                                <p class="text-slate-700">1) Ubah <b>38.995</b> menjadi <b>39.000</b> (dengan meminjam +5).</p>
+                                <p class="text-slate-700">2) Hitung mudah: <b>39.000 + 14.250 = 53.250</b>.</p>
+                                <p class="text-slate-700">3) Kembalikan -5 penambah tadi: <b>53.250 - 5 = 53.245</b>! 🎉</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `,
+            'add-ltr': `
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between">
+                        <h3 class="font-extrabold text-emerald-800 text-base md:text-lg">💡 Trik 2: Penjumlahan dari Kiri ke Kanan (Dekomposisi)</h3>
+                        <span class="bg-blue-100 text-blue-800 text-xs px-3 py-1 rounded-full font-bold">Cocok untuk hitungan di luar kepala</span>
+                    </div>
+                    <p class="text-xs md:text-sm text-slate-600 leading-relaxed">
+                        Berbeda dengan cara sekolah bersusun (dari kanan/satuan), otak kita membaca dari <b>Kiri ke Kanan (Puluh Ribuan ➔ Ribuan ➔ Ratusan)</b>.
+                    </p>
+                    <div class="bg-white p-4 rounded-xl border border-blue-200 space-y-2 text-xs md:text-sm">
+                        <strong class="text-slate-800 font-bold block">Contoh Soal: 45.000 + 23.400 = ... ?</strong>
+                        <div class="p-3 bg-blue-50 border border-blue-200 rounded-xl space-y-1 mt-1">
+                            <p class="text-slate-700">1) Jumlahkan Puluh Ribuan & Ribuannya dulu: <b>45.000 + 20.000 = 65.000</b></p>
+                            <p class="text-slate-700">2) Tambahkan sisa ribuannya: <b>65.000 + 3.000 = 68.000</b></p>
+                            <p class="text-slate-700">3) Tambahkan ratusannya: <b>68.000 + 400 = 68.400</b>!</p>
+                        </div>
+                    </div>
+                </div>
+            `,
+            'sub-constant': `
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between">
+                        <h3 class="font-extrabold text-amber-800 text-base md:text-lg">💡 Trik 3: Pengurangan Selisih Konstan (Bebas Pinjam Nol)</h3>
+                        <span class="bg-amber-100 text-amber-800 text-xs px-3 py-1 rounded-full font-bold">SUPER TRICK!</span>
+                    </div>
+                    <p class="text-xs md:text-sm text-slate-600 leading-relaxed">
+                        Meminjam angka nol beruntun (seperti pada <span class="font-bold text-rose-600">50.000 - 18.245</span>) sering buat siswa pusing dan salah. Triknya: <b>Kurangi kedua angka dengan 1 terlebih dahulu!</b> Selisihnya akan tetap sama persis!
+                    </p>
+                    <div class="bg-white p-4 rounded-xl border border-amber-300 space-y-2 text-xs md:text-sm">
+                        <strong class="text-slate-800 font-bold block">Contoh Soal: 50.000 - 18.245 = ... ?</strong>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-2">
+                            <div class="p-3 bg-rose-50 border border-rose-200 rounded-xl">
+                                <span class="font-bold text-rose-700 text-xs block mb-1">🐢 Cara Bersusun Biasa (Rumit):</span>
+                                <p class="text-slate-600">Harus meminjam dari angka 5 di depan, mencoret nol demi nol menjadi 9, 9, 9, 10. Sangat rentan keliru!</p>
+                            </div>
+                            <div class="p-3 bg-amber-50 border border-amber-300 rounded-xl space-y-1">
+                                <span class="font-bold text-amber-800 text-xs block mb-1">⚡ Trik Selisih Konstan (Kurangi 1 Kedua Angka):</span>
+                                <p class="text-slate-700">1) <b>50.000 - 1</b> = <b class="text-amber-900">49.999</b></p>
+                                <p class="text-slate-700">2) <b>18.245 - 1</b> = <b class="text-amber-900">18.244</b></p>
+                                <p class="text-slate-700 font-bold text-emerald-700">3) Hitung 49.999 - 18.244 = 31.755 (TIDAK ADA PEMINJAMAN SAMA SEKALI!)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `,
+            'add-all9': `
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between">
+                        <h3 class="font-extrabold text-indigo-800 text-base md:text-lg">💡 Trik 4: Rumus "All from 9, Last from 10" (Pengurangan dari 100.000)</h3>
+                        <span class="bg-indigo-100 text-indigo-800 text-xs px-3 py-1 rounded-full font-bold">Khusus Kembalian Uang Penuh</span>
+                    </div>
+                    <p class="text-xs md:text-sm text-slate-600 leading-relaxed">
+                        Metode cepat kuno Vedic Math untuk pengurangan dari angka bulat seperti 10.000 atau 100.000: <b>Kurangi setiap digit dari angka 9, dan digit terakhir (satuan) kurangi dari 10!</b>
+                    </p>
+                    <div class="bg-white p-4 rounded-xl border border-indigo-200 space-y-2 text-xs md:text-sm">
+                        <strong class="text-slate-800 font-bold block">Contoh Soal: 100.000 - 34.628 = ... ?</strong>
+                        <div class="p-3 bg-indigo-50 border border-indigo-200 rounded-xl space-y-1.5 mt-1 font-mono text-xs">
+                            <p class="text-slate-800">Digit 1 (3): 9 - 3 = <b>6</b></p>
+                            <p class="text-slate-800">Digit 2 (4): 9 - 4 = <b>5</b></p>
+                            <p class="text-slate-800">Digit 3 (6): 9 - 6 = <b>3</b></p>
+                            <p class="text-slate-800">Digit 4 (2): 9 - 2 = <b>7</b></p>
+                            <p class="text-slate-800 font-bold text-indigo-700">Digit Terakhir (8): 10 - 8 = 2</p>
+                            <p class="text-emerald-700 font-bold text-sm font-sans pt-1">Hasil Kilat = 65.372 🎉</p>
+                        </div>
+                    </div>
+                </div>
+            `
+        };
+
+        function switchTrickTab(tabKey) {
+            playSound('click');
+            document.querySelectorAll('.trick-tab-btn').forEach(btn => {
+                btn.classList.remove('bg-emerald-600', 'text-white', 'shadow-md');
+                btn.classList.add('text-slate-600', 'hover:bg-slate-100');
+            });
+            const activeBtn = document.getElementById(`tab-${tabKey}`);
+            activeBtn.classList.remove('text-slate-600', 'hover:bg-slate-100');
+            activeBtn.classList.add('bg-emerald-600', 'text-white', 'shadow-md');
+
+            document.getElementById('trickContentArea').innerHTML = trickContents[tabKey];
+        }
+
+
+        // --- STREAMING_CHUNK: Section 5 Interactive Simulator Logic ---
+        function presetSimulator(a, b, op) {
+            playSound('click');
+            document.getElementById('simNumA').value = a;
+            document.getElementById('simNumB').value = b;
+            document.getElementById('simOp').value = op;
+            runSimulator();
+        }
+
+        function runSimulator() {
+            playSound('click');
+            const numA = parseInt(document.getElementById('simNumA').value) || 0;
+            const numB = parseInt(document.getElementById('simNumB').value) || 0;
+            const op = document.getElementById('simOp').value;
+            const resCard = document.getElementById('simResultCard');
+
+            if (numA <= 0 || numB <= 0) {
+                resCard.innerHTML = `<span class="text-rose-400">Masukkan angka positif yang valid!</span>`;
+                return;
+            }
+
+            let html = ``;
+
+            if (op === 'sub_zero') {
+                const numA_mod = numA - 1;
+                const numB_mod = numB - 1;
+                const ans = numA - numB;
+
+                html = `
+                    <div class="text-emerald-400 font-bold text-base mb-1 font-sans">⚡ Hasil Trik Bebas Pinjam-Nol</div>
+                    <div class="text-slate-300 font-sans mb-3">Soal Asli: <b class="text-white">${formatNum(numA)} - ${formatNum(numB)}</b></div>
+                    <div class="p-3 bg-black/40 rounded-xl space-y-1 text-slate-200">
+                        <p>Langkah 1: Kurangi 1 dari ${formatNum(numA)} ➔ <b class="text-amber-300">${formatNum(numA_mod)}</b></p>
+                        <p>Langkah 2: Kurangi 1 dari ${formatNum(numB)} ➔ <b class="text-amber-300">${formatNum(numB_mod)}</b></p>
+                        <p class="pt-2 border-t border-slate-700">Langkah 3: Hitung Pengurangan Mudah (Tanpa Pinjam):</p>
+                        <p class="text-emerald-300 font-bold text-base">${formatNum(numA_mod)} - ${formatNum(numB_mod)} = ${formatNum(ans)}</p>
+                    </div>
+                `;
+            } else if (op === 'add_comp') {
+                // Find nearest rounded thousand
+                const remainder = numA % 1000;
+                const complement = 1000 - remainder;
+                const roundedA = numA + complement;
+                const tempSum = roundedA + numB;
+                const ans = numA + numB;
+
+                html = `
+                    <div class="text-emerald-400 font-bold text-base mb-1 font-sans">⚡ Hasil Trik Kompensasi Penjumlahan</div>
+                    <div class="text-slate-300 font-sans mb-3">Soal Asli: <b class="text-white">${formatNum(numA)} + ${formatNum(numB)}</b></div>
+                    <div class="p-3 bg-black/40 rounded-xl space-y-1 text-slate-200">
+                        <p>Langkah 1: Pinjam +${complement} untuk bulatkan ${formatNum(numA)} ➔ <b class="text-amber-300">${formatNum(roundedA)}</b></p>
+                        <p>Langkah 2: Jumlahkan angka bulat: ${formatNum(roundedA)} + ${formatNum(numB)} = <b class="text-amber-300">${formatNum(tempSum)}</b></p>
+                        <p class="pt-2 border-t border-slate-700">Langkah 3: Kembalikan pinjaman (-${complement}):</p>
+                        <p class="text-emerald-300 font-bold text-base">${formatNum(tempSum)} - ${complement} = ${formatNum(ans)}</p>
+                    </div>
+                `;
+            } else if (op === 'add_ltr') {
+                const ans = numA + numB;
+                html = `
+                    <div class="text-emerald-400 font-bold text-base mb-1 font-sans">⚡ Hasil Trik Penjumlahan Kiri ke Kanan</div>
+                    <div class="text-slate-300 font-sans mb-3">Soal Asli: <b class="text-white">${formatNum(numA)} + ${formatNum(numB)}</b></div>
+                    <div class="p-3 bg-black/40 rounded-xl space-y-1 text-slate-200">
+                        <p>Proses hitung mental dari digit bernilai terbesar ke terkecil:</p>
+                        <p class="text-emerald-300 font-bold text-base pt-2">${formatNum(numA)} + ${formatNum(numB)} = ${formatNum(ans)}</p>
+                    </div>
+                `;
+            }
+
+            resCard.innerHTML = html;
+        }
+
+
+        // --- STREAMING_CHUNK: Section 6 Interactive Practice Quiz Logic ---
+        const quizDataset = [
+            {
+                badge: "➖ Trik Bebas Pinjam",
+                prompt: "Gunakan trik selisih konstan (kurangi 1 kedua angka) untuk menghitung:",
+                target: "70.000 - 24.315 = ... ?",
+                ans: "45.685",
+                opts: ["45.685", "46.685", "45.785", "45.695"],
+                explain: "Dengan trik selisih konstan: <b>(70.000 - 1) - (24.315 - 1) = 69.999 - 24.314 = 45.685</b>. Sangat mudah tanpa perlu meminjam nol!"
+            },
+            {
+                badge: "➕ Trik Kompensasi",
+                prompt: "Hitung secara cepat penjumlahan berikut dengan membulatkan angka pertama:",
+                target: "49.990 + 23.500 = ... ?",
+                ans: "73.490",
+                opts: ["73.490", "73.500", "72.490", "74.490"],
+                explain: "Pinjam +10 ke 49.990 menjadi 50.000. Hitung: 50.000 + 23.500 = 73.500. Lalu kurangi 10 kembali ➔ <b>73.490</b>."
+            },
+            {
+                badge: "💵 Transaksi Kembalian",
+                prompt: "Ibu membeli belanjaan dapur seharga Rp62.400 dan membayar dengan uang lembar Rp100.000. Berapakah uang kembaliannya?",
+                target: "100.000 - 62.400 = ... ?",
+                ans: "37.600",
+                opts: ["37.600", "38.600", "37.400", "38.400"],
+                explain: "Gunakan trik komplemen / selisih konstan: 99.999 - 62.399 = <b>37.600</b>."
+            },
+            {
+                badge: "➕ Dekomposisi Kiri ke Kanan",
+                prompt: "Hitung secara mental hasil dari penjumlahan berikut:",
+                target: "34.000 + 45.200 = ... ?",
+                ans: "79.200",
+                opts: ["78.200", "79.200", "79.300", "80.200"],
+                explain: "34.000 + 40.000 = 74.000. Lalu + 5.000 = 79.000. Terakhir + 200 = <b>79.200</b>."
+            },
+            {
+                badge: "📊 Soal Cerita Tabungan",
+                prompt: "Budi memiliki tabungan sebesar Rp85.000. Ia membeli buku pelajaran seharga Rp28.500. Sisa tabungan Budi adalah...",
+                target: "85.000 - 28.500 = ... ?",
+                ans: "56.500",
+                opts: ["56.500", "57.500", "55.500", "56.000"],
+                explain: "85.000 - 28.000 = 57.000. Lalu 57.000 - 500 = <b>56.500</b>."
+            }
+        ];
+
+        let quizIndex = 0;
+        let quizScore = 0;
+        let quizStreak = 0;
+
+        function renderQuiz() {
+            const item = quizDataset[quizIndex];
+            document.getElementById('quizBadge').innerText = item.badge;
+            document.getElementById('quizIndexText').innerText = `Soal #${quizIndex + 1} dari ${quizDataset.length}`;
+            document.getElementById('quizQuestionPrompt').innerText = item.prompt;
+            document.getElementById('quizTargetDisplay').innerText = item.target;
+
+            // Feedback hide
+            const fbBox = document.getElementById('quizFeedbackBox');
+            fbBox.classList.add('hidden');
+
+            // Render options
+            const optsContainer = document.getElementById('quizOptionsContainer');
+            optsContainer.innerHTML = '';
+
+            item.opts.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = "quiz-opt-btn w-full p-4 rounded-2xl border-2 border-slate-200 bg-white font-bold text-slate-700 hover:border-indigo-400 hover:bg-indigo-50/50 transition-all text-left flex items-center justify-between group text-sm md:text-base";
+                btn.onclick = () => handleQuizAnswer(opt, item.ans, item.explain, btn);
+                btn.innerHTML = `
+                    <span>${formatNum(parseInt(opt) || opt)}</span>
+                    <span class="text-indigo-400 opacity-0 group-hover:opacity-100 transition-opacity">➔</span>
+                `;
+                optsContainer.appendChild(btn);
+            });
+        }
+
+        function handleQuizAnswer(selected, correct, explanation, btnEl) {
+            playSound('click');
+
+            // Disable buttons
+            document.querySelectorAll('.quiz-opt-btn').forEach(b => {
+                b.disabled = true;
+                b.classList.add('opacity-70', 'cursor-not-allowed');
+            });
+
+            const fbBox = document.getElementById('quizFeedbackBox');
+            const fbIcon = document.getElementById('quizFeedbackIcon');
+            const fbTitle = document.getElementById('quizFeedbackTitle');
+            const fbText = document.getElementById('quizFeedbackText');
+
+            fbBox.classList.remove('hidden', 'bg-emerald-50', 'border-emerald-200', 'bg-rose-50', 'border-rose-200');
+
+            if (selected === correct) {
+                playSound('correct');
+                quizScore += 20;
+                quizStreak++;
+                document.getElementById('quizScore').innerText = quizScore;
+                document.getElementById('quizStreak').innerText = quizStreak;
+
+                btnEl.classList.remove('bg-white', 'border-slate-200');
+                btnEl.classList.add('bg-emerald-500', 'border-emerald-600', 'text-white', '!opacity-100');
+
+                fbBox.classList.add('bg-emerald-50', 'border-emerald-200');
+                fbIcon.innerText = "🎉";
+                fbTitle.className = "font-bold text-sm text-emerald-800";
+                fbTitle.innerText = "Hebat! Trikmu Berhasil!";
+                fbText.innerHTML = explanation;
+
+                triggerConfetti();
+            } else {
+                playSound('wrong');
+                quizStreak = 0;
+                document.getElementById('quizStreak').innerText = quizStreak;
+
+                btnEl.classList.remove('bg-white', 'border-slate-200');
+                btnEl.classList.add('bg-rose-500', 'border-rose-600', 'text-white', '!opacity-100');
+
+                fbBox.classList.add('bg-rose-50', 'border-rose-200');
+                fbIcon.innerText = "💡";
+                fbTitle.className = "font-bold text-sm text-rose-800";
+                fbTitle.innerText = "Mari Pelajari Triknya!";
+                fbText.innerHTML = explanation;
+            }
+        }
+
+        function nextQuizQuestion() {
+            playSound('click');
+            quizIndex = (quizIndex + 1) % quizDataset.length;
+            renderQuiz();
+        }
+
+
+        // --- STREAMING_CHUNK: Particle Confetti Effect ---
+        function triggerConfetti() {
+            const canvas = document.getElementById('confettiCanvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const particles = [];
+            const colors = ['#10b981', '#3b82f6', '#f59e0b', '#ec4899', '#8b5cf6'];
+
+            for (let i = 0; i < 40; i++) {
+                particles.push({
+                    x: canvas.width / 2,
+                    y: canvas.height / 2 + 50,
+                    vx: (Math.random() - 0.5) * 12,
+                    vy: (Math.random() - 0.7) * 14,
+                    size: Math.random() * 8 + 4,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    life: 1
+                });
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                let active = false;
+
+                particles.forEach(p => {
+                    if (p.life > 0) {
+                        active = true;
+                        p.x += p.vx;
+                        p.y += p.vy;
+                        p.vy += 0.35;
+                        p.life -= 0.025;
+
+                        ctx.fillStyle = p.color;
+                        ctx.globalAlpha = p.life;
+                        ctx.beginPath();
+                        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                });
+
+                if (active) requestAnimationFrame(animate);
+            }
+            animate();
+        }
+
+
+        // On Window Initial Load
+        window.onload = function() {
+            renderWarmup();
+            switchTrickTab('add-comp');
+            runSimulator();
+            renderQuiz();
+        };
+    </script>
+</body>
+</html>
