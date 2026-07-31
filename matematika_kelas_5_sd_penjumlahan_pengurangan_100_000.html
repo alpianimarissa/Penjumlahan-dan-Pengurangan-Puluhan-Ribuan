@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matematika Kelas 5 SD - Penjumlahan & Pengurangan Bersusun 100.000</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@500;600;700;800&family=Fira+Code:wght@600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Fredoka', 'Quicksand', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace']
+                    },
+                    colors: {
+                        brandBlue: '#0284C7',
+                        brandYellow: '#F59E0B',
+                        brandPink: '#EC4899',
+                        brandGreen: '#10B981',
+                        brandPurple: '#8B5CF6'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Fredoka', 'Quicksand', sans-serif;
+            background: linear-gradient(135deg, #E0F2FE 0%, #FEF3C7 50%, #F3E8FF 100%);
+            min-height: 100vh;
+        }
+        .comic-card {
+            box-shadow: 0 8px 0px 0px rgba(15, 23, 42, 0.12);
+        }
+        .comic-btn {
+            transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 0px 0px #0f172a;
+        }
+        .comic-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 0px 0px #0f172a;
+        }
+        .comic-btn:active:not(:disabled) {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0px 0px #0f172a;
+        }
+        .bounce-gentle {
+            animation: bounceGentle 2s infinite;
+        }
+        @keyframes bounceGentle {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+        .pulse-active {
+            animation: pulseGlow 1.2s infinite alternate;
+        }
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.7); }
+            100% { box-shadow: 0 0 0 8px rgba(245, 158, 11, 0); }
+        }
+    </style>
+</head>
+<body class="text-slate-800 pb-20">
+
+    <script>
+        const SoundFX = {
+            ctx: null,
+            enabled: true,
+            init() {
+                if (!this.ctx) {
+                    this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+            },
+            toggleSound() {
+                this.enabled = !this.enabled;
+                const btn = document.getElementById('sound-btn');
+                if (btn) {
+                    btn.innerHTML = this.enabled 
+                        ? '<i class="fa-solid fa-volume-high text-sky-700"></i>' 
+                        : '<i class="fa-solid fa-volume-xmark text-rose-500"></i>';
+                }
+            },
+            playClick() {
+                if (!this.enabled) return;
+                this.init();
+                let osc = this.ctx.createOscillator();
+                let gain = this.ctx.createGain();
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.frequency.setValueAtTime(520, this.ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(880, this.ctx.currentTime + 0.05);
+                gain.gain.setValueAtTime(0.08, this.ctx.currentTime);
+                gain.gain.linearRampToValueAtTime(0.01, this.ctx.currentTime + 0.05);
+                osc.start();
+                osc.stop(this.ctx.currentTime + 0.06);
+            },
+            playSuccess() {
+                if (!this.enabled) return;
+                this.init();
+                let now = this.ctx.currentTime;
+                let notes = [523.25, 659.25, 783.99, 1046.50];
+                notes.forEach((freq, idx) => {
+                    let osc = this.ctx.createOscillator();
+                    let gain = this.ctx.createGain();
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.frequency.setValueAtTime(freq, now + idx * 0.07);
+                    gain.gain.setValueAtTime(0.1, now + idx * 0.07);
+                    gain.gain.linearRampToValueAtTime(0.01, now + idx * 0.07 + 0.12);
+                    osc.start(now + idx * 0.07);
+                    osc.stop(now + idx * 0.07 + 0.13);
+                });
+            },
+            playWrong() {
+                if (!this.enabled) return;
+                this.init();
+                let osc = this.ctx.createOscillator();
+                let gain = this.ctx.createGain();
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(280, this.ctx.currentTime);
+                osc.frequency.linearRampToValueAtTime(140, this.ctx.currentTime + 0.18);
+                gain.gain.setValueAtTime(0.08, this.ctx.currentTime);
+                gain.gain.linearRampToValueAtTime(0.01, this.ctx.currentTime + 0.18);
+                osc.start();
+                osc.stop(this.ctx.currentTime + 0.19);
+            }
+        };
+    </script>
+
+    <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b-4 border-slate-900 px-4 py-3 shadow-md">
+        <div class="max-w-4xl mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <span class="text-3xl bounce-gentle">🏫</span>
+                <div>
+                    <h1 class="text-lg sm:text-xl font-black text-slate-900 leading-tight">MATEMATIKA KELAS 5 SD</h1>
+                    <p class="text-xs font-bold text-sky-600">Penjumlahan & Pengurangan Bersusun (s.d. 100.000)</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-2">
+                <button id="sound-btn" onclick="SoundFX.toggleSound()" class="w-10 h-10 bg-sky-100 hover:bg-sky-200 border-2 border-slate-900 rounded-2xl flex items-center justify-center text-slate-800 font-bold transition-all" title="Suara">
+                    <i class="fa-solid fa-volume-high text-sky-700"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-4 pt-6 space-y-10">
+
+        <section class="bg-white rounded-3xl border-4 border-slate-900 p-6 comic-card relative overflow-hidden">
+            <div class="absolute -right-6 -bottom-6 w-28 h-28 bg-amber-200 rounded-full opacity-40 pointer-events-none"></div>
+            
+            <div class="flex items-center gap-3 mb-4">
+                <span class="p-2.5 bg-amber-400 text-slate-900 border-2 border-slate-900 rounded-2xl font-black text-lg">
+                    🎯 1
+                </span>
+                <div>
+                    <h2 class="text-xl font-black text-slate-900">Tujuan Pembelajaran Kelas 5</h2>
+                    <p class="text-xs font-bold text-slate-500">Target kemampuan hebatmu hari ini!</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <div class="bg-sky-50 border-2 border-slate-900 p-4 rounded-2xl flex items-start gap-3">
+                    <span class="text-2xl">🔢</span>
+                    <div>
+                        <h3 class="font-black text-sm text-sky-900">Nilai Tempat 100.000</h3>
+                        <p class="text-xs text-slate-600 font-medium">Mahir menyusun angka berdasarkan <strong>Puluh Ribuan, Ribuan, Ratusan, Puluhan, dan Satuan</strong>.</p>
+                    </div>
+                </div>
+
+                <div class="bg-amber-50 border-2 border-slate-900 p-4 rounded-2xl flex items-start gap-3">
+                    <span class="text-2xl">➕</span>
+                    <div>
+                        <h3 class="font-black text-sm text-amber-900">Teknik Menyimpan</h3>
+                        <p class="text-xs text-slate-600 font-medium">Menguasai penjumlahan bersusun 5 digit dengan <strong>teknik menyimpan (carrying)</strong>.</p>
+                    </div>
+                </div>
+
+                <div class="bg-purple-50 border-2 border-slate-900 p-4 rounded-2xl flex items-start gap-3">
+                    <span class="text-2xl">➖</span>
+                    <div>
+                        <h3 class="font-black text-sm text-purple-900">Teknik Meminjam</h3>
+                        <p class="text-xs text-slate-600 font-medium">Menguasai pengurangan bersusun puluh ribuan dengan <strong>teknik meminjam (borrowing)</strong>.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-white rounded-3xl border-4 border-slate-900 p-6 comic-card space-y-4">
+            <div class="flex items-center justify-between flex-wrap gap-2">
+                <div class="flex items-center gap-3">
+                    <span class="p-2.5 bg-rose-400 text-white border-2 border-slate-900 rounded-2xl font-black text-lg">
+                        🔥 2
+                    </span>
+                    <div>
+                        <h2 class="text-xl font-black text-slate-900">Warm-Up (8 Soal Pemanasan Kelas 5)</h2>
+                        <p class="text-xs font-bold text-slate-500">Asah otakmu sebelum masuk ke puluh ribuan!</p>
+                    </div>
+                </div>
+                <div class="bg-emerald-100 border-2 border-slate-900 px-3 py-1.5 rounded-xl font-black text-xs text-emerald-900">
+                    Selesai: <span id="warmup-progress" class="text-emerald-700 text-sm">0/8</span> ✅
+                </div>
+            </div>
+
+            <div id="warmup-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-2">
+                <!-- Warmup Cards injected via JS -->
+            </div>
+        </section>
+
+        <section class="bg-white rounded-3xl border-4 border-slate-900 p-6 comic-card space-y-4">
+            <div class="flex items-center gap-3">
+                <span class="p-2.5 bg-emerald-400 text-slate-900 border-2 border-slate-900 rounded-2xl font-black text-lg">
+                    🏫 3
+                </span>
+                <div>
+                    <h2 class="text-xl font-black text-slate-900">Koneksi Nyata (Kehidupan Sehari-hari)</h2>
+                    <p class="text-xs font-bold text-slate-500">Mengapa kita harus bisa menghitung hingga 100.000?</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="bg-gradient-to-br from-amber-50 to-orange-50 border-3 border-slate-900 p-4 rounded-2xl space-y-2">
+                    <div class="text-3xl">🏟️</div>
+                    <h3 class="font-black text-slate-900 text-sm">Tiket Pertandingan Sepak Bola</h3>
+                    <p class="text-xs text-slate-700 font-medium">
+                        Stadion menjual <strong>34.500 tiket utama</strong> dan <strong>23.200 tiket VIP</strong>. Berapa total tiket yang terjual?
+                    </p>
+                    <span class="inline-block px-2.5 py-1 bg-amber-200 border border-slate-900 rounded-lg text-[11px] font-black text-amber-900">
+                        ➕ Penjumlahan Puluh Ribuan
+                    </span>
+                </div>
+
+                <div class="bg-gradient-to-br from-sky-50 to-indigo-50 border-3 border-slate-900 p-4 rounded-2xl space-y-2">
+                    <div class="text-3xl">🛍️</div>
+                    <h3 class="font-black text-slate-900 text-sm">Uang Kas & Belanja Kelas 5</h3>
+                    <p class="text-xs text-slate-700 font-medium">
+                        Kas kelas memiliki <strong>Rp 85.000</strong>, lalu digunakan membeli peralatan pentas seharga <strong>Rp 32.500</strong>. Berapa sisa kas?
+                    </p>
+                    <span class="inline-block px-2.5 py-1 bg-sky-200 border border-slate-900 rounded-lg text-[11px] font-black text-sky-900">
+                        ➖ Pengurangan Puluh Ribuan
+                    </span>
+                </div>
+
+                <div class="bg-gradient-to-br from-purple-50 to-pink-50 border-3 border-slate-900 p-4 rounded-2xl space-y-2">
+                    <div class="text-3xl">🌾</div>
+                    <h3 class="font-black text-slate-900 text-sm">Hasil Panen Padi Desa</h3>
+                    <p class="text-xs text-slate-700 font-medium">
+                        Target panen adalah <strong>50.000 kg</strong>. Jika baru terkumpul <strong>27.450 kg</strong>, berapa kg padi yang masih kurang?
+                    </p>
+                    <span class="inline-block px-2.5 py-1 bg-purple-200 border border-slate-900 rounded-lg text-[11px] font-black text-purple-900">
+                        ➖ Meminjam Melalui Nol
+                    </span>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-white rounded-3xl border-4 border-slate-900 p-6 comic-card space-y-6">
+            <div class="flex items-center gap-3">
+                <span class="p-2.5 bg-purple-500 text-white border-2 border-slate-900 rounded-2xl font-black text-lg">
+                    💡 4
+                </span>
+                <div>
+                    <h2 class="text-xl font-black text-slate-900">Konsep Inti & Trik Super 99.999</h2>
+                    <p class="text-xs font-bold text-slate-500">Pahami aturan nilai tempat 5 digit & trik rahasianya!</p>
+                </div>
+            </div>
+
+            <!-- Tab Switcher for Concept -->
+            <div class="flex flex-wrap gap-2 border-b-2 border-slate-200 pb-2">
+                <button onclick="switchConceptTab('add')" id="tab-btn-add" class="comic-btn px-4 py-2 bg-amber-400 text-slate-900 font-black text-xs rounded-xl border-2 border-slate-900">
+                    ➕ Penjumlahan (Simpan)
+                </button>
+                <button onclick="switchConceptTab('sub')" id="tab-btn-sub" class="comic-btn px-4 py-2 bg-slate-100 text-slate-700 font-black text-xs rounded-xl border-2 border-slate-900">
+                    ➖ Pengurangan (Pinjam)
+                </button>
+                <button onclick="switchConceptTab('trick')" id="tab-btn-trick" class="comic-btn px-4 py-2 bg-slate-100 text-slate-700 font-black text-xs rounded-xl border-2 border-slate-900">
+                    ⚡ Trik Super 99.999
+                </button>
+            </div>
+
+            <!-- Concept Content 1: Addition -->
+            <div id="concept-add" class="space-y-4">
+                <div class="bg-amber-50 border-3 border-slate-900 p-4 rounded-2xl">
+                    <h3 class="font-black text-slate-900 text-base mb-2">📌 Aturan Penjumlahan Bersusun (5 Digit / Puluh Ribuan)</h3>
+                    <ol class="list-decimal list-inside text-xs font-bold text-slate-700 space-y-1.5">
+                        <li>Luruskan nilai tempat: <strong>Puluh Ribuan, Ribuan, Ratusan, Puluhan, Satuan</strong>.</li>
+                        <li>Kerjakan selalu dari kolom paling kanan (<strong>Satuan</strong> terlebih dahulu!).</li>
+                        <li>Jika hasil penjumlahan <strong>10 atau lebih</strong>, tulis angka <strong>satuannya</strong> di bawah, lalu <strong>simpan angka puluhannya (1)</strong> di atas kolom sebelah kiri.</li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- Concept Content 2: Subtraction -->
+            <div id="concept-sub" class="hidden space-y-4">
+                <div class="bg-sky-50 border-3 border-slate-900 p-4 rounded-2xl">
+                    <h3 class="font-black text-slate-900 text-base mb-2">📌 Aturan Pengurangan Bersusun (5 Digit / Puluh Ribuan)</h3>
+                    <ol class="list-decimal list-inside text-xs font-bold text-slate-700 space-y-1.5">
+                        <li>Luruskan nilai tempat secara rapi dari kanan ke kiri.</li>
+                        <li>Jika angka atas lebih kecil dari angka bawah, <strong>pinjam 1 (bernilai 10)</strong> dari kolom sebelah kirinya.</li>
+                        <li>Angka sebelah kiri yang dipinjam nilainya berkurang 1.</li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- Concept Content 3: Quick Trick -->
+            <div id="concept-trick" class="hidden space-y-4">
+                <div class="bg-purple-50 border-3 border-slate-900 p-4 rounded-2xl space-y-2">
+                    <div class="flex items-center gap-2">
+                        <span class="text-2xl">🚀</span>
+                        <h3 class="font-black text-purple-900 text-base">Trik Rahasia 99.999: Meminjam Dari Puluh Ribuan Pas (Contoh: 50.000 - 23.456)</h3>
+                    </div>
+                    <p class="text-xs text-slate-700 font-medium leading-relaxed">
+                        Pengurangan dari angka puluhan ribu nol beruntun seperti <strong>50.000</strong> sering membuat pusing karena harus meminjam berturut-turut.
+                        <br><strong class="text-purple-900">Gunakan TRIK KURANGI 1:</strong>
+                    </p>
+
+                    <div class="bg-white border-2 border-slate-900 p-3 rounded-xl font-mono text-xs space-y-1.5 text-slate-900">
+                        <div class="font-bold text-indigo-700 font-sans">Langkah 1: Kurangi kedua angka dengan 1</div>
+                        <div>50.000 - 1 = <strong class="text-amber-600">49.999</strong></div>
+                        <div>23.456 - 1 = <strong class="text-amber-600">23.455</strong></div>
+                        <div class="font-bold text-indigo-700 font-sans pt-1">Langkah 2: Kurangkan tanpa perlu meminjam sama sekali!</div>
+                        <div class="p-2 bg-slate-900 text-amber-300 rounded-lg text-center font-bold text-sm">
+                            49.999 - 23.455 = 26.544 ✨
+                        </div>
+                        <p class="text-[11px] font-sans font-bold text-emerald-600 text-center">
+                            Hasilnya sama persis dengan 50.000 - 23.456 = 26.544! Super cepat tanpa salah pinjam!
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-white rounded-3xl border-4 border-slate-900 p-6 comic-card space-y-5">
+            <div class="flex items-center justify-between flex-wrap gap-2">
+                <div class="flex items-center gap-3">
+                    <span class="p-2.5 bg-sky-500 text-white border-2 border-slate-900 rounded-2xl font-black text-lg">
+                        🖥️ 5
+                    </span>
+                    <div>
+                        <h2 class="text-xl font-black text-slate-900">Simulator Papan Bersusun Interaktif 5 Digit</h2>
+                        <p class="text-xs font-bold text-slate-500">Pilih soal atau isi angkamu sendiri (s.d. 100.000), lalu ikuti simulasinya!</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Controls Header: Preset selector & Custom input -->
+            <div class="bg-sky-50 border-3 border-slate-900 p-4 rounded-2xl space-y-3">
+                <div class="flex items-center gap-2 flex-wrap">
+                    <span class="text-xs font-black text-slate-700">Pilih Soal Contoh:</span>
+                    <button onclick="loadSimPreset(53842, 27495, '+')" class="comic-btn px-2.5 py-1.5 bg-amber-300 hover:bg-amber-400 border-2 border-slate-900 rounded-xl font-black text-xs">
+                        ➕ 53.842 + 27.495
+                    </button>
+                    <button onclick="loadSimPreset(46758, 28584, '+')" class="comic-btn px-2.5 py-1.5 bg-amber-300 hover:bg-amber-400 border-2 border-slate-900 rounded-xl font-black text-xs">
+                        ➕ 46.758 + 28.584
+                    </button>
+                    <button onclick="loadSimPreset(72300, 35648, '-')" class="comic-btn px-2.5 py-1.5 bg-sky-300 hover:bg-sky-400 border-2 border-slate-900 rounded-xl font-black text-xs">
+                        ➖ 72.300 - 35.648
+                    </button>
+                    <button onclick="loadSimPreset(50000, 23456, '-')" class="comic-btn px-2.5 py-1.5 bg-purple-300 hover:bg-purple-400 border-2 border-slate-900 rounded-xl font-black text-xs">
+                        ➖ 50.000 - 23.456 (Nol)
+                    </button>
+                </div>
+
+                <!-- Custom Input Drawer -->
+                <div class="pt-2 border-t-2 border-sky-200 flex flex-wrap items-center gap-2">
+                    <span class="text-xs font-black text-slate-700">Atau Buat Soal Sendiri:</span>
+                    <input id="custom-num1" type="number" min="10000" max="99999" value="64258" class="w-24 px-2 py-1 border-2 border-slate-900 rounded-xl font-mono text-center font-bold text-xs bg-white">
+                    <select id="custom-op" class="px-2 py-1 border-2 border-slate-900 rounded-xl font-bold text-xs bg-white">
+                        <option value="+">➕ Penjumlahan</option>
+                        <option value="-">➖ Pengurangan</option>
+                    </select>
+                    <input id="custom-num2" type="number" min="1000" max="99999" value="28734" class="w-24 px-2 py-1 border-2 border-slate-900 rounded-xl font-mono text-center font-bold text-xs bg-white">
+                    <button onclick="applyCustomSim()" class="comic-btn px-3 py-1 bg-emerald-400 hover:bg-emerald-500 text-slate-900 border-2 border-slate-900 rounded-xl font-black text-xs">
+                        🚀 Mulai
+                    </button>
+                </div>
+            </div>
+
+            <!-- SIMULATOR VISUAL BOARD (5 DIGITS) -->
+            <div class="bg-slate-900 border-4 border-slate-900 p-3 sm:p-6 rounded-3xl text-white space-y-4 overflow-x-auto">
+                
+                <!-- Board Columns Header -->
+                <div class="grid grid-cols-6 gap-1 sm:gap-2 text-center text-[10px] sm:text-xs font-black font-sans min-w-[340px]">
+                    <div class="text-slate-500">Operasi</div>
+                    <div id="col-head-4" class="py-1 rounded-lg bg-slate-800 text-slate-300">Puluh Ribuan</div>
+                    <div id="col-head-3" class="py-1 rounded-lg bg-slate-800 text-slate-300">Ribuan</div>
+                    <div id="col-head-2" class="py-1 rounded-lg bg-slate-800 text-slate-300">Ratusan</div>
+                    <div id="col-head-1" class="py-1 rounded-lg bg-slate-800 text-slate-300">Puluhan</div>
+                    <div id="col-head-0" class="py-1 rounded-lg bg-slate-800 text-slate-300">Satuan</div>
+                </div>
+
+                <!-- Simpan / Coret Pinjam Row -->
+                <div class="grid grid-cols-6 gap-1 sm:gap-2 text-center font-mono font-bold text-xs sm:text-sm h-8 items-center min-w-[340px]">
+                    <div class="text-amber-400 font-sans text-[10px] sm:text-[11px]">Simpan/Pinjam</div>
+                    <div id="sim-badge-4" class="h-full flex items-center justify-center rounded-lg"></div>
+                    <div id="sim-badge-3" class="h-full flex items-center justify-center rounded-lg"></div>
+                    <div id="sim-badge-2" class="h-full flex items-center justify-center rounded-lg"></div>
+                    <div id="sim-badge-1" class="h-full flex items-center justify-center rounded-lg"></div>
+                    <div id="sim-badge-0" class="h-full flex items-center justify-center rounded-lg"></div>
+                </div>
+
+                <!-- Number 1 Row -->
+                <div class="grid grid-cols-6 gap-1 sm:gap-2 text-center font-mono font-bold text-base sm:text-2xl items-center min-w-[340px]">
+                    <div id="sim-op-display" class="text-amber-400 font-black text-xl sm:text-2xl">+</div>
+                    <div id="sim-n1-4" class="p-1.5 sm:p-2 bg-slate-800 rounded-xl border border-slate-700">0</div>
+                    <div id="sim-n1-3" class="p-1.5 sm:p-2 bg-slate-800 rounded-xl border border-slate-700">0</div>
+                    <div id="sim-n1-2" class="p-1.5 sm:p-2 bg-slate-800 rounded-xl border border-slate-700">0</div>
+                    <div id="sim-n1-1" class="p-1.5 sm:p-2 bg-slate-800 rounded-xl border border-slate-700">0</div>
+                    <div id="sim-n1-0" class="p-1.5 sm:p-2 bg-slate-800 rounded-xl border border-slate-700">0</div>
+                </div>
+
+                <!-- Number 2 Row -->
+                <div class="grid grid-cols-6 gap-1 sm:gap-2 text-center font-mono font-bold text-base sm:text-2xl items-center pb-2 border-b-4 border-amber-400 min-w-[340px]">
+                    <div></div>
+                    <div id="sim-n2-4" class="p-1.5 sm:p-2 bg-slate-800 rounded-xl border border-slate-700">0</div>
+                    <div id="sim-n2-3" class="p-1.5 sm:p-2 bg-slate-800 rounded-xl border border-slate-700">0</div>
+                    <div id="sim-n2-2" class="p-1.5 sm:p-2 bg-slate-800 rounded-xl border border-slate-700">0</div>
+                    <div id="sim-n2-1" class="p-1.5 sm:p-2 bg-slate-800 rounded-xl border border-slate-700">0</div>
+                    <div id="sim-n2-0" class="p-1.5 sm:p-2 bg-slate-800 rounded-xl border border-slate-700">0</div>
+                </div>
+
+                <!-- Result Row -->
+                <div class="grid grid-cols-6 gap-1 sm:gap-2 text-center font-mono font-black text-lg sm:text-3xl items-center pt-1 min-w-[340px]">
+                    <div class="text-[10px] sm:text-xs font-sans text-emerald-400">Hasil =</div>
+                    <div id="sim-res-4" class="p-1.5 sm:p-2 bg-slate-800/80 rounded-xl text-slate-600 border border-slate-700">?</div>
+                    <div id="sim-res-3" class="p-1.5 sm:p-2 bg-slate-800/80 rounded-xl text-slate-600 border border-slate-700">?</div>
+                    <div id="sim-res-2" class="p-1.5 sm:p-2 bg-slate-800/80 rounded-xl text-slate-600 border border-slate-700">?</div>
+                    <div id="sim-res-1" class="p-1.5 sm:p-2 bg-slate-800/80 rounded-xl text-slate-600 border border-slate-700">?</div>
+                    <div id="sim-res-0" class="p-1.5 sm:p-2 bg-slate-800/80 rounded-xl text-slate-600 border border-slate-700">?</div>
+                </div>
+
+                <!-- Step Explanation Banner -->
+                <div id="sim-step-banner" class="bg-slate-800 border-2 border-amber-400 p-3 sm:p-4 rounded-2xl text-center text-xs sm:text-sm font-bold text-amber-200">
+                    Klik "Langkah Selanjutnya" untuk memulai pengerjaan dari kolom Satuan!
+                </div>
+            </div>
+
+            <!-- Simulator Action Buttons -->
+            <div class="flex flex-wrap gap-2 justify-center pt-2">
+                <button onclick="simStartOver()" class="comic-btn px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-800 border-2 border-slate-900 rounded-xl font-black text-xs">
+                    ⏮️ Mula-mula
+                </button>
+                <button onclick="simPrevStep()" class="comic-btn px-4 py-2 bg-sky-200 hover:bg-sky-300 text-slate-900 border-2 border-slate-900 rounded-xl font-black text-xs">
+                    ◀️ Langkah Sebelumnya
+                </button>
+                <button onclick="simNextStep()" class="comic-btn px-6 py-2.5 bg-amber-400 hover:bg-amber-500 text-slate-900 border-2 border-slate-900 rounded-xl font-black text-sm">
+                    ▶️ Langkah Selanjutnya
+                </button>
+            </div>
+        </section>
+
+        <section class="bg-white rounded-3xl border-4 border-slate-900 p-6 comic-card space-y-5">
+            <div class="flex items-center justify-between flex-wrap gap-2">
+                <div class="flex items-center gap-3">
+                    <span class="p-2.5 bg-indigo-600 text-white border-2 border-slate-900 rounded-2xl font-black text-lg">
+                        ⚡ 6
+                    </span>
+                    <div>
+                        <h2 class="text-xl font-black text-slate-900">Latihan Soal Kelas 5 (10 Soal Variatif)</h2>
+                        <p class="text-xs font-bold text-slate-500">Uji pemahamanmu dan raih skor 1.000 sempurna!</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <div class="bg-amber-100 border-2 border-slate-900 px-3 py-1.5 rounded-xl text-xs font-black text-amber-900">
+                        🔥 Streak: <span id="quiz-streak" class="text-amber-600 text-sm">0</span>
+                    </div>
+                    <div class="bg-emerald-100 border-2 border-slate-900 px-3 py-1.5 rounded-xl text-xs font-black text-emerald-900">
+                        Skor: <span id="quiz-score" class="text-emerald-600 text-sm">0</span> ⭐
+                    </div>
+                    <button onclick="resetMainQuiz()" class="px-2.5 py-1.5 bg-indigo-500 hover:bg-indigo-600 text-white border-2 border-slate-900 rounded-xl text-xs font-black transition-all">
+                        <i class="fa-solid fa-rotate-right"></i> Reset
+                    </button>
+                </div>
+            </div>
+
+            <!-- Quiz Items Grid -->
+            <div id="main-quiz-container" class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                <!-- Injected via JS -->
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // --- 1. WARM-UP DATA & LOGIC (GRADE 5) ---
+        const warmupData = [
+            { id: 1, q: "30.000 + 40.000", opts: [60000, 70000, 80000], ans: 70000 },
+            { id: 2, q: "80.000 - 30.000", opts: [50000, 40000, 60000], ans: 50000 },
+            { id: 3, q: "Nilai tempat 7 pada 57.420", opts: ["Puluh Ribuan", "Ribuan", "Ratusan"], ans: "Ribuan" },
+            { id: 4, q: "25.000 + 15.000", opts: [38000, 40000, 45000], ans: 40000 },
+            { id: 5, q: "60.000 - 15.000", opts: [45000, 50000, 40000], ans: 45000 },
+            { id: 6, q: "Nilai tempat 4 pada 48.910", opts: ["Puluh Ribuan", "Ribuan", "Puluhan"], ans: "Puluh Ribuan" },
+            { id: 7, q: "43.000 + 12.000", opts: [55000, 56000, 54000], ans: 55000 },
+            { id: 8, q: "100.000 - 40.000", opts: [50000, 60000, 70000], ans: 60000 }
+        ];
+
+        let warmupSolvedCount = 0;
+        let warmupState = new Array(warmupData.length).fill(false);
+
+        function initWarmup() {
+            const container = document.getElementById('warmup-container');
+            if (!container) return;
+            container.innerHTML = '';
+
+            warmupData.forEach((item, idx) => {
+                const card = document.createElement('div');
+                card.className = "bg-slate-50 border-2 border-slate-900 p-3 rounded-2xl flex flex-col justify-between space-y-2";
+
+                let optionsHTML = item.opts.map(opt => `
+                    <button onclick="checkWarmup(${idx}, '${opt}', this)" class="comic-btn py-1.5 px-2 bg-white border border-slate-900 rounded-xl text-xs font-black text-slate-800 hover:bg-sky-100">
+                        ${typeof opt === 'number' ? opt.toLocaleString('id-ID') : opt}
+                    </button>
+                `).join('');
+
+                card.innerHTML = `
+                    <div>
+                        <span class="text-[10px] font-black text-sky-700 bg-sky-100 border border-slate-900 px-2 py-0.5 rounded-lg">Soal #${idx + 1}</span>
+                        <div class="text-sm font-black text-slate-900 text-center py-2">${item.q}</div>
+                    </div>
+                    <div id="warmup-opts-${idx}" class="grid grid-cols-1 gap-1.5">
+                        ${optionsHTML}
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function checkWarmup(idx, selected, btn) {
+            if (warmupState[idx]) return;
+
+            const target = warmupData[idx];
+            const optsContainer = document.getElementById(`warmup-opts-${idx}`);
+
+            if (selected == target.ans) {
+                SoundFX.playSuccess();
+                warmupState[idx] = true;
+                warmupSolvedCount++;
+                btn.className = "py-1.5 px-2 bg-emerald-400 border border-slate-900 rounded-xl text-xs font-black text-slate-900";
+                document.getElementById('warmup-progress').textContent = `${warmupSolvedCount}/8`;
+            } else {
+                SoundFX.playWrong();
+                btn.className = "py-1.5 px-2 bg-rose-400 border border-slate-900 rounded-xl text-xs font-black text-white";
+            }
+
+            const btns = optsContainer.querySelectorAll('button');
+            btns.forEach(b => {
+                b.disabled = true;
+                let textClean = b.innerText.replace(/\./g, '').trim();
+                if (textClean == target.ans) {
+                    b.className = "py-1.5 px-2 bg-emerald-200 border border-slate-900 rounded-xl text-xs font-black text-emerald-900";
+                } else if (b !== btn) {
+                    b.classList.add('opacity-40');
+                }
+            });
+        }
+
+        // --- 2. CONCEPT TAB SWITCHER ---
+        function switchConceptTab(tab) {
+            SoundFX.playClick();
+            const addEl = document.getElementById('concept-add');
+            const subEl = document.getElementById('concept-sub');
+            const trickEl = document.getElementById('concept-trick');
+
+            const btnAdd = document.getElementById('tab-btn-add');
+            const btnSub = document.getElementById('tab-btn-sub');
+            const btnTrick = document.getElementById('tab-btn-trick');
+
+            addEl.classList.add('hidden');
+            subEl.classList.add('hidden');
+            trickEl.classList.add('hidden');
+
+            btnAdd.className = "comic-btn px-4 py-2 bg-slate-100 text-slate-700 font-black text-xs rounded-xl border-2 border-slate-900";
+            btnSub.className = "comic-btn px-4 py-2 bg-slate-100 text-slate-700 font-black text-xs rounded-xl border-2 border-slate-900";
+            btnTrick.className = "comic-btn px-4 py-2 bg-slate-100 text-slate-700 font-black text-xs rounded-xl border-2 border-slate-900";
+
+            if (tab === 'add') {
+                addEl.classList.remove('hidden');
+                btnAdd.className = "comic-btn px-4 py-2 bg-amber-400 text-slate-900 font-black text-xs rounded-xl border-2 border-slate-900";
+            } else if (tab === 'sub') {
+                subEl.classList.remove('hidden');
+                btnSub.className = "comic-btn px-4 py-2 bg-sky-400 text-white font-black text-xs rounded-xl border-2 border-slate-900";
+            } else {
+                trickEl.classList.remove('hidden');
+                btnTrick.className = "comic-btn px-4 py-2 bg-purple-500 text-white font-black text-xs rounded-xl border-2 border-slate-900";
+            }
+        }
+
+        // --- 3. DYNAMIC INTERACTIVE BOARD SIMULATOR LOGIC (5 DIGITS) ---
+        let simCurrentNum1 = 53842;
+        let simCurrentNum2 = 27495;
+        let simCurrentOp = '+';
+        let simCurrentStep = 0; // 0 = start, 1 = Satuan, 2 = Puluhan, 3 = Ratusan, 4 = Ribuan, 5 = Puluh Ribuan, 6 = Finished
+
+        function loadSimPreset(n1, n2, op) {
+            SoundFX.playClick();
+            simCurrentNum1 = n1;
+            simCurrentNum2 = n2;
+            simCurrentOp = op;
+            document.getElementById('custom-num1').value = n1;
+            document.getElementById('custom-num2').value = n2;
+            document.getElementById('custom-op').value = op;
+            simStartOver();
+        }
+
+        function applyCustomSim() {
+            SoundFX.playClick();
+            const n1 = parseInt(document.getElementById('custom-num1').value) || 10000;
+            const n2 = parseInt(document.getElementById('custom-num2').value) || 1000;
+            const op = document.getElementById('custom-op').value;
+
+            if (op === '-' && n1 < n2) {
+                alert("Untuk pengurangan SD kelas 5, angka pertama harus lebih besar!");
+                return;
+            }
+
+            if (n1 > 99999 || n2 > 99999) {
+                alert("Maksimal angka adalah 99.999 (5 digit)!");
+                return;
+            }
+
+            simCurrentNum1 = n1;
+            simCurrentNum2 = n2;
+            simCurrentOp = op;
+            simStartOver();
+        }
+
+        function getDigitsArray5(num) {
+            const str = num.toString().padStart(5, '0');
+            return [
+                parseInt(str[4]), // index 0: Satuan
+                parseInt(str[3]), // index 1: Puluhan
+                parseInt(str[2]), // index 2: Ratusan
+                parseInt(str[1]), // index 3: Ribuan
+                parseInt(str[0])  // index 4: Puluh Ribuan
+            ];
+        }
+
+        function simStartOver() {
+            simCurrentStep = 0;
+            renderSimBoard();
+        }
+
+        function simNextStep() {
+            SoundFX.playClick();
+            if (simCurrentStep < 6) {
+                simCurrentStep++;
+                renderSimBoard();
+            }
+        }
+
+        function simPrevStep() {
+            SoundFX.playClick();
+            if (simCurrentStep > 0) {
+                simCurrentStep--;
+                renderSimBoard();
+            }
+        }
+
+        function renderSimBoard() {
+            const d1 = getDigitsArray5(simCurrentNum1);
+            const d2 = getDigitsArray5(simCurrentNum2);
+            const opDisplay = document.getElementById('sim-op-display');
+            opDisplay.textContent = simCurrentOp;
+
+            // Reset column highlights for 5 columns
+            for (let c = 0; c < 5; c++) {
+                document.getElementById(`col-head-${c}`).className = "py-1 rounded-lg bg-slate-800 text-slate-300";
+                document.getElementById(`sim-n1-${c}`).className = "p-1.5 sm:p-2 bg-slate-800 rounded-xl border border-slate-700 text-white";
+                document.getElementById(`sim-n2-${c}`).className = "p-1.5 sm:p-2 bg-slate-800 rounded-xl border border-slate-700 text-white";
+                document.getElementById(`sim-res-${c}`).className = "p-1.5 sm:p-2 bg-slate-800/80 rounded-xl text-slate-600 border border-slate-700";
+                document.getElementById(`sim-badge-${c}`).innerHTML = "";
+                document.getElementById(`sim-res-${c}`).textContent = "?";
+            }
+
+            // Fill digits
+            for (let c = 0; c < 5; c++) {
+                document.getElementById(`sim-n1-${c}`).textContent = d1[c];
+                document.getElementById(`sim-n2-${c}`).textContent = d2[c];
+            }
+
+            const stepBanner = document.getElementById('sim-step-banner');
+
+            if (simCurrentStep === 0) {
+                stepBanner.innerHTML = `<strong>Siap Dimulai!</strong> Soal: <span class="text-amber-300">${simCurrentNum1.toLocaleString('id-ID')} ${simCurrentOp} ${simCurrentNum2.toLocaleString('id-ID')}</span>. Klik "Langkah Selanjutnya" untuk pengerjaan dari kolom Satuan.`;
+                return;
+            }
+
+            // Compute step by step simulation state
+            if (simCurrentOp === '+') {
+                renderAdditionStep5(d1, d2, simCurrentStep, stepBanner);
+            } else {
+                renderSubtractionStep5(d1, d2, simCurrentStep, stepBanner);
+            }
+        }
+
+        function renderAdditionStep5(d1, d2, step, banner) {
+            let carry = [0, 0, 0, 0, 0, 0];
+            let res = [0, 0, 0, 0, 0];
+
+            for (let c = 0; c < 5; c++) {
+                let sum = d1[c] + d2[c] + carry[c];
+                if (sum >= 10) {
+                    res[c] = sum % 10;
+                    carry[c + 1] = 1;
+                } else {
+                    res[c] = sum;
+                }
+            }
+
+            // Show badges and results up to current step
+            for (let c = 0; c < step; c++) {
+                if (c < 5) {
+                    document.getElementById(`sim-res-${c}`).textContent = res[c];
+                    document.getElementById(`sim-res-${c}`).className = "p-1.5 sm:p-2 bg-emerald-500/30 text-emerald-300 rounded-xl border border-emerald-400 font-black";
+                }
+            }
+
+            for (let c = 1; c < 5; c++) {
+                if (carry[c] > 0 && c <= step) {
+                    document.getElementById(`sim-badge-${c}`).innerHTML = `<span class="px-2 py-0.5 bg-amber-400 text-slate-900 rounded-full font-black text-xs">+1</span>`;
+                }
+            }
+
+            // Highlight current active column
+            if (step <= 5) {
+                let activeCol = step - 1;
+                document.getElementById(`col-head-${activeCol}`).className = "py-1 rounded-lg bg-amber-400 text-slate-900 font-black pulse-active";
+                document.getElementById(`sim-n1-${activeCol}`).className = "p-1.5 sm:p-2 bg-amber-500/30 text-amber-200 rounded-xl border-2 border-amber-400 font-black";
+                document.getElementById(`sim-n2-${activeCol}`).className = "p-1.5 sm:p-2 bg-amber-500/30 text-amber-200 rounded-xl border-2 border-amber-400 font-black";
+
+                const names = ["Satuan", "Puluhan", "Ratusan", "Ribuan", "Puluh Ribuan"];
+                let c = activeCol;
+                let sum = d1[c] + d2[c] + (carry[c] || 0);
+                let carryText = carry[c] ? ` (termasuk simpanan +1)` : "";
+
+                if (sum >= 10) {
+                    banner.innerHTML = `<strong>Langkah ${step} (${names[c]}):</strong> ${d1[c]} + ${d2[c]}${carryText} = <strong>${sum}</strong>. Tulis <span class="text-emerald-300 font-black">${sum % 10}</span> di bawah, simpan <span class="text-amber-300 font-black">1</span> ke kolom ${names[c+1] || 'kiri'}.`;
+                } else {
+                    banner.innerHTML = `<strong>Langkah ${step} (${names[c]}):</strong> ${d1[c]} + ${d2[c]}${carryText} = <strong>${sum}</strong>. Tulis langsung <span class="text-emerald-300 font-black">${sum}</span> di bawah!`;
+                }
+            } else {
+                let finalAns = (simCurrentNum1 + simCurrentNum2).toLocaleString('id-ID');
+                banner.innerHTML = `✨ <strong>Selesai Sempurna!</strong> Hasil akhir dari ${simCurrentNum1.toLocaleString('id-ID')} + ${simCurrentNum2.toLocaleString('id-ID')} adalah <span class="text-emerald-300 text-base font-black">${finalAns}</span>!`;
+            }
+        }
+
+        function renderSubtractionStep5(d1, d2, step, banner) {
+            let workingD1 = [...d1];
+            let res = [0, 0, 0, 0, 0];
+
+            // Calculate subtraction borrowing state
+            for (let c = 0; c < 5; c++) {
+                if (workingD1[c] < d2[c]) {
+                    // Need to borrow
+                    let bCol = c + 1;
+                    while (bCol < 5 && workingD1[bCol] === 0) {
+                        workingD1[bCol] = 9;
+                        bCol++;
+                    }
+                    if (bCol < 5) {
+                        workingD1[bCol] -= 1;
+                    }
+                    workingD1[c] += 10;
+                }
+                res[c] = workingD1[c] - d2[c];
+            }
+
+            // Display results up to current step
+            for (let c = 0; c < step; c++) {
+                if (c < 5) {
+                    document.getElementById(`sim-res-${c}`).textContent = res[c];
+                    document.getElementById(`sim-res-${c}`).className = "p-1.5 sm:p-2 bg-sky-500/30 text-sky-300 rounded-xl border border-sky-400 font-black";
+                }
+            }
+
+            // Display borrowed status badges
+            for (let c = 0; c < 5; c++) {
+                if (workingD1[c] !== d1[c] && c <= step) {
+                    document.getElementById(`sim-badge-${c}`).innerHTML = `<span class="px-2 py-0.5 bg-rose-500 text-white rounded-full font-black text-xs">(${workingD1[c]})</span>`;
+                }
+            }
+
+            if (step <= 5) {
+                let activeCol = step - 1;
+                document.getElementById(`col-head-${activeCol}`).className = "py-1 rounded-lg bg-sky-400 text-slate-900 font-black pulse-active";
+                document.getElementById(`sim-n1-${activeCol}`).className = "p-1.5 sm:p-2 bg-sky-500/30 text-sky-200 rounded-xl border-2 border-sky-400 font-black";
+                document.getElementById(`sim-n2-${activeCol}`).className = "p-1.5 sm:p-2 bg-sky-500/30 text-sky-200 rounded-xl border-2 border-sky-400 font-black";
+
+                const names = ["Satuan", "Puluhan", "Ratusan", "Ribuan", "Puluh Ribuan"];
+                let c = activeCol;
+                let topVal = workingD1[c];
+
+                if (d1[c] < d2[c]) {
+                    banner.innerHTML = `<strong>Langkah ${step} (${names[c]}):</strong> Angka ${d1[c]} lebih kecil dari ${d2[c]}. Pinjam 1 dari ${names[c+1]} (menjadi ${topVal}). Maka <strong>${topVal} - ${d2[c]} = <span class="text-sky-300 font-black">${res[c]}</span></strong>!`;
+                } else {
+                    banner.innerHTML = `<strong>Langkah ${step} (${names[c]}):</strong> ${topVal} - ${d2[c]} = <strong><span class="text-sky-300 font-black">${res[c]}</span></strong>. Tulis ${res[c]} di bawah!`;
+                }
+            } else {
+                let finalAns = (simCurrentNum1 - simCurrentNum2).toLocaleString('id-ID');
+                banner.innerHTML = `✨ <strong>Selesai Sempurna!</strong> Hasil akhir dari ${simCurrentNum1.toLocaleString('id-ID')} - ${simCurrentNum2.toLocaleString('id-ID')} adalah <span class="text-sky-300 text-base font-black">${finalAns}</span>!`;
+            }
+        }
+
+        // --- 4. MAIN QUIZ DATA & LOGIC (10 SOAL VARIATIF KELAS 5) ---
+        const mainQuizData = [
+            { id: 1, type: "Penjumlahan Tanpa Simpan", q: "32.415 + 15.263 = ...", opts: [47678, 47578, 46678], ans: 47678 },
+            { id: 2, type: "Penjumlahan 1 Simpan", q: "45.382 + 23.274 = ...", opts: [68656, 68556, 67656], ans: 68656 },
+            { id: 3, type: "Penjumlahan Berkali Simpan", q: "56.789 + 28.456 = ...", opts: [85245, 85145, 84245], ans: 85245 },
+            { id: 4, type: "Pengurangan Tanpa Pinjam", q: "87.654 - 34.212 = ...", opts: [53442, 53342, 52442], ans: 53442 },
+            { id: 5, type: "Pengurangan 1 Pinjam", q: "64.520 - 21.810 = ...", opts: [42710, 42810, 43710], ans: 42710 },
+            { id: 6, type: "Pengurangan Berkali Pinjam", q: "71.345 - 38.567 = ...", opts: [32778, 32878, 31778], ans: 32778 },
+            { id: 7, type: "Pengurangan Nol Pas (Trik 99.999)", q: "60.000 - 24.358 = ...", opts: [35642, 36642, 35742], ans: 35642 },
+            { id: 8, type: "Soal Cerita Tiket Stadion", q: "Panitia pertandingan menjual 42.500 tiket utama dan 28.750 tiket VIP. Total tiket yang terjual adalah...", opts: [71250, 70250, 71350], ans: 71250 },
+            { id: 9, type: "Soal Cerita Kas Koperasi", q: "Koperasi sekolah memiliki saldo Rp 95.000. Membeli peralatan kantor seharga Rp 47.500. Sisa saldo koperasi adalah...", opts: [47500, 46500, 48500], ans: 47500 },
+            { id: 10, type: "Soal Kombinasi Puluh Ribuan", q: "24.000 + 36.000 - 12.500 = ...", opts: [47500, 48500, 46500], ans: 47500 }
+        ];
+
+        let quizUserAnswers = new Array(mainQuizData.length).fill(null);
+        let quizScore = 0;
+        let quizStreak = 0;
+
+        function renderMainQuiz() {
+            const container = document.getElementById('main-quiz-container');
+            if (!container) return;
+            container.innerHTML = '';
+
+            mainQuizData.forEach((item, idx) => {
+                const card = document.createElement('div');
+                card.className = "bg-slate-50 border-3 border-slate-900 p-4 rounded-2xl flex flex-col justify-between space-y-3";
+
+                let optionsHTML = item.opts.map(opt => `
+                    <button onclick="submitMainQuizAnswer(${idx}, ${opt}, this)" class="comic-btn py-2 px-2 bg-white border-2 border-slate-900 rounded-xl font-black text-xs sm:text-sm text-slate-800 hover:bg-indigo-100">
+                        ${opt.toLocaleString('id-ID')}
+                    </button>
+                `).join('');
+
+                card.innerHTML = `
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="px-2.5 py-0.5 bg-indigo-200 border-2 border-slate-900 rounded-lg text-[11px] font-black text-indigo-900">
+                                Soal #${idx + 1} (${item.type})
+                            </span>
+                            <span id="quiz-status-${idx}" class="text-xs font-black text-slate-400">Belum dijawab</span>
+                        </div>
+
+                        <div class="bg-white border-2 border-slate-900 p-3 rounded-xl text-center">
+                            <span class="text-base sm:text-lg font-black text-slate-900">${item.q}</span>
+                        </div>
+                    </div>
+
+                    <div id="quiz-opts-${idx}" class="grid grid-cols-3 gap-2 pt-1">
+                        ${optionsHTML}
+                    </div>
+                `;
+
+                container.appendChild(card);
+            });
+        }
+
+        function submitMainQuizAnswer(qIdx, selected, btn) {
+            if (quizUserAnswers[qIdx] !== null) return;
+
+            quizUserAnswers[qIdx] = selected;
+            const target = mainQuizData[qIdx];
+            const statusEl = document.getElementById(`quiz-status-${qIdx}`);
+            const optsContainer = document.getElementById(`quiz-opts-${qIdx}`);
+
+            if (selected === target.ans) {
+                SoundFX.playSuccess();
+                quizScore += 100;
+                quizStreak += 1;
+                document.getElementById('quiz-score').textContent = quizScore;
+                document.getElementById('quiz-streak').textContent = quizStreak;
+
+                btn.className = "py-2 px-2 bg-emerald-400 border-2 border-slate-900 rounded-xl font-black text-xs sm:text-sm text-slate-900";
+                statusEl.innerHTML = `<span class="text-emerald-600 font-black"><i class="fa-solid fa-circle-check"></i> Benar! (+100)</span>`;
+            } else {
+                SoundFX.playWrong();
+                quizStreak = 0;
+                document.getElementById('quiz-streak').textContent = '0';
+
+                btn.className = "py-2 px-2 bg-rose-400 text-white border-2 border-slate-900 rounded-xl font-black text-xs sm:text-sm";
+                statusEl.innerHTML = `<span class="text-rose-500 font-black"><i class="fa-solid fa-circle-xmark"></i> Salah!</span>`;
+            }
+
+            const btns = optsContainer.querySelectorAll('button');
+            btns.forEach(b => {
+                b.disabled = true;
+                let val = parseInt(b.innerText.replace(/\./g, '').trim());
+                if (b !== btn && val === target.ans) {
+                    b.className = "py-2 px-2 bg-emerald-200 border-2 border-slate-900 rounded-xl font-black text-xs sm:text-sm text-emerald-900";
+                } else if (b !== btn) {
+                    b.classList.add('opacity-40');
+                }
+            });
+        }
+
+        function resetMainQuiz() {
+            SoundFX.playClick();
+            quizScore = 0;
+            quizStreak = 0;
+            quizUserAnswers.fill(null);
+            document.getElementById('quiz-score').textContent = '0';
+            document.getElementById('quiz-streak').textContent = '0';
+            renderMainQuiz();
+        }
+
+        window.onload = function() {
+            initWarmup();
+            renderSimBoard();
+            renderMainQuiz();
+        };
+    </script>
+</body>
+</html>
